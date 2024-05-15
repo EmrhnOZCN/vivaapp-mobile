@@ -4,21 +4,248 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".ui.dashboard.DashboardFragment">
 
-    <TextView
-        android:id="@+id/text_dashboard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
+    <View
+        android:id="@+id/half_circle"
+        android:layout_width="460dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="84dp"
+        android:background="@drawable/half_circle"
+        app:layout_constraintBottom_toTopOf="@+id/category2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/category1"
+        android:layout_width="100dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="172dp"
+        app:cardCornerRadius="26dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toStartOf="@+id/category2"
+        app:layout_constraintHorizontal_bias="0.518"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:src="@drawable/meyvesebze" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/category1_name"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/category2"
+        android:layout_width="100dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="172dp"
+        android:layout_marginEnd="4dp"
+
+        app:cardCornerRadius="26dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toStartOf="@+id/category3"
+        app:layout_constraintHorizontal_bias="0.53"
+        app:layout_constraintStart_toEndOf="@+id/category4"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:src="@drawable/ettavuk" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/category2_name"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/category3"
+        android:layout_width="95dp"
+        android:layout_height="110dp"
+
+        android:layout_marginTop="172dp"
+
+        app:cardCornerRadius="26dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.416"
+        app:layout_constraintStart_toEndOf="@+id/category5"
+        app:layout_constraintTop_toTopOf="parent"  >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:src="@drawable/icecek" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/category3_name"
+                android:textSize="11sp" />/>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/category4"
+        android:layout_width="95dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="36dp"
+
+        app:cardCornerRadius="26dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toStartOf="@+id/category5"
+        app:layout_constraintHorizontal_bias="0.465"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/category1"  >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:src="@drawable/temelgida" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/category4_name"
+                android:textSize="11sp" />/>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/category5"
+        android:layout_width="95dp"
+        android:layout_height="110dp"
+        android:layout_marginEnd="24dp"
+
+        app:cardCornerRadius="26dp"
+        app:cardElevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/category6"
+        app:layout_constraintTop_toBottomOf="@+id/category2"
+        app:layout_constraintVertical_bias="0.118" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageView7"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:src="@drawable/deterjan" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/category5_name"
+                android:textSize="11sp" />/>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/category6"
+        android:layout_width="95dp"
+        android:layout_height="110dp"
+        android:layout_marginEnd="28dp"
+
+        app:cardCornerRadius="26dp"
+        app:cardElevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/category3"
+        app:layout_constraintVertical_bias="0.118" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageView8"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:src="@drawable/fo" />
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/category6_name"
+                android:textSize="11sp" />/>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+    <ImageView
+        android:id="@+id/imageView12"
+        android:layout_width="427dp"
+        android:layout_height="442dp"
+        android:layout_marginTop="400dp"
+
+
+        android:src="@drawable/vegetable"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

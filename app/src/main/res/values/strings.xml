@@ -3,4 +3,14 @@
     <string name="title_home">Ana sayfa</string>
     <string name="title_dashboard">Kategori</string>
     <string name="title_notifications">Sepet</string>
+    <string name="category1_name">Meyve, Sebze</string>
+    <string name="category2_name">Et, Tavuk, Balık</string>
+    <string name="category3_name">İçecek</string>
+    <string name="category4_name">Temel Gıda</string>
+    <string name="category5_name">Deterjan, Temizlik</string>
+    <string name="category6_name">Fırın, Pastane</string>
+
+
+
+
 </resources>
