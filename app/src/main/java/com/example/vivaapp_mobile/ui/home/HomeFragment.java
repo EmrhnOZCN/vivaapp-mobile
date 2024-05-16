@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.vivaapp_mobile.ui.LoginActivity;
+import com.example.vivaapp_mobile.ui.login.LoginActivity;
 
 import com.example.vivaapp_mobile.databinding.FragmentHomeBinding;
 import com.example.vivaapp_mobile.ui.chatbot.ChatbotActivity;

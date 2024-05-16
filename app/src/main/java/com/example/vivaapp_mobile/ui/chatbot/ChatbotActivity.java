@@ -1,43 +1,51 @@
 package com.example.vivaapp_mobile.ui.chatbot;
 
+import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.vivaapp_mobile.MainActivity;
 import com.example.vivaapp_mobile.R;
-
 import java.util.ArrayList;
 import java.util.List;
+import com.example.vivaapp_mobile.databinding.ActivityChatbotBinding;
 
 public class ChatbotActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
+    private ActivityChatbotBinding binding;
     private ChatAdapter adapter;
     private List<ChatMessage> messageList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chatbot);
+        binding = ActivityChatbotBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        recyclerView = findViewById(R.id.recyclerViewChat);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        // RecyclerView için layoutManager'ı ayarla
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setStackFromEnd(true); // Mesajları en alttan başlayarak göster
+        binding.recyclerViewChat.setLayoutManager(layoutManager);
 
+        // Mesaj listesini oluştur ve adaptöre ayarla
         messageList = new ArrayList<>();
+        adapter = new ChatAdapter(messageList);
+        binding.recyclerViewChat.setAdapter(adapter);
 
-        // Örnek kullanıcı ve bot mesajları oluştur
+        // Örnek kullanıcı ve bot mesajlarını oluştur ve adaptöre ekle
         ChatMessage userMessage = new ChatMessage("Kıymalı makarna için sepet oluştur.", ChatAdapter.TYPE_USER);
         ChatMessage botMessage = new ChatMessage("Merhaba, size nasıl yardımcı olabilirim?", ChatAdapter.TYPE_BOT);
-
         messageList.add(botMessage);
-        // Mesajları listeye ekle
         messageList.add(userMessage);
-   ;
 
-        // Mesaj listesini adaptöre ayarla
-        adapter = new ChatAdapter(messageList);
-        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
+        // "Ana Sayfa" butonuna tıklandığında AnaSayfaActivity'e yönlendir
+        binding.anasayfaDon.setOnClickListener(view -> {
+            Intent intent = new Intent(ChatbotActivity.this, MainActivity.class);
+            startActivity(intent);
+        });
     }
 }
