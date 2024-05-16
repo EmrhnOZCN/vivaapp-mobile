@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.vivaapp_mobile.ui.LoginActivity;
 
 import com.example.vivaapp_mobile.databinding.FragmentHomeBinding;
+import com.example.vivaapp_mobile.ui.chatbot.ChatbotActivity;
 
 public class HomeFragment extends Fragment {
 
@@ -33,6 +34,15 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 // Launch LoginActivity when the button is clicked
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.chatbotButon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Launch LoginActivity when the button is clicked
+                Intent intent = new Intent(getActivity(), ChatbotActivity.class);
                 startActivity(intent);
             }
         });

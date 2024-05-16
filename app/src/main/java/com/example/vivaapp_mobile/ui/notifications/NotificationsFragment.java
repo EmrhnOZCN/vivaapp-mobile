@@ -76,10 +76,19 @@ public class NotificationsFragment extends Fragment {
         List<CartItem> cartItems = new ArrayList<>();
 
 
-        CartItem item = new CartItem("Ürün Adı", 24.99, "@drawable/store.png");
-        CartItem item2 = new CartItem("Ürün Adı", 125.99, "@drawable/worker.png");
+        CartItem item = new CartItem("Ürün Adı", 24.99, "drawable/ettavuk.png.jpg");
+
+
         cartItems.add(item);
-        cartItems.add(item2);
+        cartItems.add(item);
+        cartItems.add(item);
+        cartItems.add(item);
+        cartItems.add(item);
+
+
+
+
+
 
         return cartItems;
     }
