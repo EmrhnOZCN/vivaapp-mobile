@@ -35,12 +35,15 @@
         android:id="@+id/girisButon"
         android:layout_width="35dp"
         android:layout_height="30dp"
-
         android:layout_marginTop="16dp"
         android:layout_marginEnd="27dp"
+        android:src="@drawable/user"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/user" />
+        android:onClick="showDropdownMenu" />
+
+
+
 
     <ImageView
         android:id="@+id/chatbotButon"
@@ -91,4 +94,8 @@
         app:layout_constraintHorizontal_bias="0.545"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/reklam2" />
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

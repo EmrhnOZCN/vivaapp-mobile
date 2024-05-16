@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Vivaappmobile"
         tools:targetApi="31">
         <activity
+            android:name=".ui.ChatbotActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.RegisterActivity"
             android:exported="false" />
         <activity
@@ -20,8 +23,7 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true"
-         >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
