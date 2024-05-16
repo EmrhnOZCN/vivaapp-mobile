@@ -34,9 +34,52 @@
         android:id="@+id/recyclerView"
         android:layout_width="314dp"
         android:layout_height="474dp"
-        android:layout_marginTop="164dp"
+        android:layout_marginTop="84dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Sipariş tutarını gösteren alan ve Siparişi Onayla düğmesi -->
+    <!-- Sipariş tutarını gösteren alan ve Siparişi Onayla düğmesi -->
+    <LinearLayout
+        android:id="@+id/orderLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView">
+
+        <!-- Sipariş tutarını gösteren alan -->
+
+
+        <!-- Siparişi Onayla düğmesi -->
+        <TextView
+            android:id="@+id/orderSummaryText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="Toplam Tutar: $0.00"
+            android:textSize="22sp" />
+
+        <Button
+            android:id="@+id/confirmOrderButton"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="26dp"
+            android:background="@color/orange"
+            android:text="Siparişi Onayla"
+            android:textColor="@color/gray_150"
+            android:textSize="10sp"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

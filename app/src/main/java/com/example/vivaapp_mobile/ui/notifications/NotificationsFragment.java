@@ -27,26 +27,45 @@ public class NotificationsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
         NotificationsViewModel notificationsViewModel =
                 new ViewModelProvider(this).get(NotificationsViewModel.class);
-
 
         binding = FragmentNotificationsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-
         recyclerView = root.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        // Sepet öğelerini al
         List<CartItem> cartItems = getCartItemsFromSharedPreferences();
 
-
+        // CartItemAdapter'ı oluştur ve RecyclerView'a ata
         adapter = new CartItemAdapter(getContext(), cartItems);
         recyclerView.setAdapter(adapter);
 
+        // Sepet tutarını gösteren TextView'i bul
+        TextView totalPriceTextView = root.findViewById(R.id.orderSummaryText);
+
+        // Sepet tutarını hesapla
+        double totalPrice = calculateTotalPrice(cartItems);
+
+        // Sepet tutarını TextView'e ayarla
+        totalPriceTextView.setText("Toplam Tutar: " + totalPrice + " TL");
+
         return root;
     }
+
+    // Sepet tutarını hesaplamak için yöntem
+    private double calculateTotalPrice(List<CartItem> cartItems) {
+        double totalPrice = 0;
+
+        for (CartItem item : cartItems) {
+            totalPrice += item.getPrice();
+        }
+
+        return totalPrice;
+    }
+
 
 
 
@@ -58,7 +77,7 @@ public class NotificationsFragment extends Fragment {
 
 
         CartItem item = new CartItem("Ürün Adı", 24.99, "@drawable/store.png");
-        CartItem item2 = new CartItem("Ürün Adı", 25.99, "@drawable/worker.png");
+        CartItem item2 = new CartItem("Ürün Adı", 125.99, "@drawable/worker.png");
         cartItems.add(item);
         cartItems.add(item2);
 
