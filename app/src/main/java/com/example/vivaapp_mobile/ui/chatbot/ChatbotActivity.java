@@ -24,25 +24,26 @@ public class ChatbotActivity extends AppCompatActivity {
         binding = ActivityChatbotBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // RecyclerView için layoutManager'ı ayarla
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setStackFromEnd(true); // Mesajları en alttan başlayarak göster
+        //layoutManager.setStackFromEnd(true); // Mesajları en alttan başlayarak göster
         binding.recyclerViewChat.setLayoutManager(layoutManager);
 
-        // Mesaj listesini oluştur ve adaptöre ayarla
+
         messageList = new ArrayList<>();
         adapter = new ChatAdapter(messageList);
         binding.recyclerViewChat.setAdapter(adapter);
 
-        // Örnek kullanıcı ve bot mesajlarını oluştur ve adaptöre ekle
+
         ChatMessage userMessage = new ChatMessage("Kıymalı makarna için sepet oluştur.", ChatAdapter.TYPE_USER);
         ChatMessage botMessage = new ChatMessage("Merhaba, size nasıl yardımcı olabilirim?", ChatAdapter.TYPE_BOT);
         messageList.add(botMessage);
         messageList.add(userMessage);
 
+
         adapter.notifyDataSetChanged();
 
-        // "Ana Sayfa" butonuna tıklandığında AnaSayfaActivity'e yönlendir
+
         binding.anasayfaDon.setOnClickListener(view -> {
             Intent intent = new Intent(ChatbotActivity.this, MainActivity.class);
             startActivity(intent);
