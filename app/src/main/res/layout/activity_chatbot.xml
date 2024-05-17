@@ -53,17 +53,20 @@
         android:id="@+id/recyclerViewChat"
         android:layout_width="366dp"
         android:layout_height="459dp"
+        android:background="@color/gray_100"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/editTextMessage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/item_bot_message" />
+        tools:listitem="@layout/item_bot_message_chatbot" />
 
     <EditText
         android:id="@+id/editTextMessage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:hint="Mesajınızı yazın..."
         android:inputType="text"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -74,9 +77,13 @@
     <!-- Mesajı göndermek için bir buton -->
     <Button
         android:id="@+id/buttonSend"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/remove_button_background"
         android:text="Gönder"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="@id/editTextMessage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/editTextMessage" />

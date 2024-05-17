@@ -29,10 +29,10 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         View view;
         switch (viewType) {
             case TYPE_USER:
-                view = inflater.inflate(R.layout.item_user_message, parent, false);
+                view = inflater.inflate(R.layout.item_user_message_chatbot, parent, false);
                 return new UserMessageViewHolder(view);
             case TYPE_BOT:
-                view = inflater.inflate(R.layout.item_bot_message, parent, false);
+                view = inflater.inflate(R.layout.item_bot_message_chatbot, parent, false);
                 return new BotMessageViewHolder(view);
             default:
                 throw new IllegalArgumentException("Invalid view type");

@@ -1,11 +1,8 @@
-<!-- res/layout/cart_item_layout.xml -->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="16dp"
- >
+    android:padding="16dp">
 
     <ImageView
         android:id="@+id/productImage"
@@ -40,14 +37,21 @@
 
     </LinearLayout>
 
+    <Spinner
+        android:id="@+id/quantitySpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:entries="@array/quantity_array" />
+
     <Button
         android:id="@+id/removeButton"
-        android:layout_width="50dp"
+        android:layout_width="35dp"
         android:layout_height="30dp"
+        android:layout_gravity="center_vertical"
         android:background="@drawable/remove_button_background"
         android:padding="8dp"
         android:text="X"
-        android:textColor="@color/white"
-        android:layout_gravity="center_vertical" />
+        android:textColor="@color/white" />
 
 </LinearLayout>

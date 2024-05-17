@@ -11,5 +11,7 @@
     <color name="gray_200">#E0E0E0</color>
     <color name="gray_100">#F5F5F5</color>
     <color name="gray_150">#E0E0E0</color>
-
+    <color name="gray_50">#FAFAFA</color>
+    <color name="gray_120">#F0F0F0</color>
+    <color name="blue">#00BCD4</color>
 </resources>

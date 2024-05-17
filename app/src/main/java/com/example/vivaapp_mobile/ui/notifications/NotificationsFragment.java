@@ -13,84 +13,83 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vivaapp_mobile.R;
-import com.example.vivaapp_mobile.databinding.FragmentNotificationsBinding;
+import com.example.vivaapp_mobile.databinding.FragmentCardBinding;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-public class NotificationsFragment extends Fragment {
+public class NotificationsFragment extends Fragment implements CartItemAdapter.OnItemQuantityChangeListener {
 
-    private FragmentNotificationsBinding binding;
+    private FragmentCardBinding binding;
     private RecyclerView recyclerView;
     private CartItemAdapter adapter;
+    private TextView totalPriceTextView;
+    private List<CartItem> cartItems;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         NotificationsViewModel notificationsViewModel =
                 new ViewModelProvider(this).get(NotificationsViewModel.class);
 
-        binding = FragmentNotificationsBinding.inflate(inflater, container, false);
+        binding = FragmentCardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         recyclerView = root.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // Sepet öğelerini al
-        List<CartItem> cartItems = getCartItemsFromSharedPreferences();
+        cartItems = getCartItemsFromSharedPreferences();
 
         // CartItemAdapter'ı oluştur ve RecyclerView'a ata
-        adapter = new CartItemAdapter(getContext(), cartItems);
+        adapter = new CartItemAdapter(getContext(), cartItems, this);
         recyclerView.setAdapter(adapter);
 
         // Sepet tutarını gösteren TextView'i bul
-        TextView totalPriceTextView = root.findViewById(R.id.orderSummaryText);
+        totalPriceTextView = root.findViewById(R.id.orderSummaryText);
 
-        // Sepet tutarını hesapla
-        double totalPrice = calculateTotalPrice(cartItems);
-
-        // Sepet tutarını TextView'e ayarla
-        totalPriceTextView.setText("Toplam Tutar: " + totalPrice + " TL");
+        // Sepet tutarını hesapla ve güncelle
+        updateTotalPrice();
 
         return root;
     }
 
+    @Override
+    public void onItemQuantityChange(int position, int newQuantity) {
+        cartItems.get(position).setQuantity(newQuantity);
+        updateTotalPrice();
+    }
+
+    // Sepet tutarını hesaplamak ve güncellemek için yöntem
+    private void updateTotalPrice() {
+        double totalPrice = calculateTotalPrice();
+        String formattedTotalPrice = String.format("Toplam Tutar: %.2f TL", totalPrice);
+        totalPriceTextView.setText(formattedTotalPrice);
+    }
+
     // Sepet tutarını hesaplamak için yöntem
-    private double calculateTotalPrice(List<CartItem> cartItems) {
+    private double calculateTotalPrice() {
         double totalPrice = 0;
 
         for (CartItem item : cartItems) {
-            totalPrice += item.getPrice();
+            totalPrice += item.getPrice() * item.getQuantity();
         }
 
         return totalPrice;
     }
 
-
-
-
-
     // Method to get cart items from SharedPreferences
     private List<CartItem> getCartItemsFromSharedPreferences() {
-
         List<CartItem> cartItems = new ArrayList<>();
 
-
-        CartItem item = new CartItem("Ürün Adı", 24.99, "drawable/ettavuk.png.jpg");
-
+        CartItem item = new CartItem("Ürün Adı", 24.99, "drawable/ettavuk.png.jpg", 4);
 
         cartItems.add(item);
         cartItems.add(item);
         cartItems.add(item);
-        cartItems.add(item);
-        cartItems.add(item);
-
-
-
-
-
+        CartItem item2 = new CartItem("Ürün Adı", 24.99, "drawable/ettavuk.png.jpg", 8);
+        cartItems.add(item2);
+        cartItems.add(item2);
 
         return cartItems;
     }
-
 }
