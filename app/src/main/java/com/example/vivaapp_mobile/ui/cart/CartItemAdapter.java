@@ -57,19 +57,15 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
                 R.array.quantity_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         holder.quantitySpinner.setAdapter(adapter);
-        holder.quantitySpinner.setSelection(cartItem.getQuantity() - 1); // Spinner index 0'dan başlar
+        holder.quantitySpinner.setSelection(cartItem.getQuantity() - 1);
 
         holder.quantitySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 int newQuantity = Integer.parseInt(parent.getItemAtPosition(pos).toString());
                 cartItem.setQuantity(newQuantity);
+                saveProductToSharedPreferences(cartItem);
                 quantityChangeListener.onItemQuantityChange(position, newQuantity);
-
-
-                if (newQuantity == 0) {
-                    removeProductFromSharedPreferences(cartItem);
-                }
             }
 
             @Override
@@ -91,7 +87,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
         return cartItemList.size();
     }
 
-    private void removeProductFromSharedPreferences(CartItem cartItem) {
+    private void saveProductToSharedPreferences(CartItem cartItem) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("cart_prefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -99,13 +95,48 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
         Set<String> productSet = sharedPreferences.getStringSet("products", new HashSet<>());
 
 
+        String newProductString = cartItem.getImageUrl() + "," + cartItem.getName() + "," + cartItem.getPrice() + "," + cartItem.getQuantity();
+
+
+        Set<String> updatedProductSet = new HashSet<>();
+        boolean productExists = false;
+        for (String productString : productSet) {
+            String[] parts = productString.split(",");
+            String productName = parts[1];
+            if (productName.equals(cartItem.getName())) {
+                // Update the product quantity if it exists
+                updatedProductSet.add(newProductString);
+                productExists = true;
+            } else {
+                updatedProductSet.add(productString);
+            }
+        }
+
+        if (!productExists) {
+            // Add the new product if it didn't exist
+            updatedProductSet.add(newProductString);
+        }
+
+        // Save the updated set back to SharedPreferences
+        editor.putStringSet("products", updatedProductSet);
+        editor.apply();
+    }
+
+    private void removeProductFromSharedPreferences(CartItem cartItem) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("cart_prefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        // Get existing set of products
+        Set<String> productSet = sharedPreferences.getStringSet("products", new HashSet<>());
+
+        // Create a string representation of the product to be removed
         String productStringToRemove = cartItem.getImageUrl() + "," + cartItem.getName() + "," + cartItem.getPrice() + "," + cartItem.getQuantity();
 
-
+        // Remove the product string from the set
         Set<String> updatedProductSet = new HashSet<>(productSet);
         updatedProductSet.remove(productStringToRemove);
 
-
+        // Save the updated set back to SharedPreferences
         editor.putStringSet("products", updatedProductSet);
         editor.apply();
     }
