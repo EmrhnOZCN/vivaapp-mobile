@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vivaapp_mobile.databinding.ItemProductBinding;
+import com.example.vivaapp_mobile.model.Product;
 
 import java.util.HashSet;
 import java.util.List;

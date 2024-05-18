@@ -16,13 +16,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vivaapp_mobile.R;
 import com.example.vivaapp_mobile.databinding.FragmentCardBinding;
+import com.example.vivaapp_mobile.model.CartItem;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class NotificationsFragment extends Fragment implements CartItemAdapter.OnItemQuantityChangeListener {
+public class CartFragment extends Fragment implements CartItemAdapter.OnItemQuantityChangeListener {
 
     private FragmentCardBinding binding;
     private RecyclerView recyclerView;
@@ -32,8 +33,8 @@ public class NotificationsFragment extends Fragment implements CartItemAdapter.O
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        NotificationsViewModel notificationsViewModel =
-                new ViewModelProvider(this).get(NotificationsViewModel.class);
+        CartViewModel notificationsViewModel =
+                new ViewModelProvider(this).get(CartViewModel.class);
 
         binding = FragmentCardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();

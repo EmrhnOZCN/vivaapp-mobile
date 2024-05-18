@@ -1,4 +1,4 @@
-package com.example.vivaapp_mobile.ui.cart;
+package com.example.vivaapp_mobile.model;
 
 public class CartItem {
     private String name;

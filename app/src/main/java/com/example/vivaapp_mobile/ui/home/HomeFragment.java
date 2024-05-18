@@ -18,7 +18,7 @@ import com.example.vivaapp_mobile.ui.login.LoginActivity;
 
 import com.example.vivaapp_mobile.databinding.FragmentHomeBinding;
 import com.example.vivaapp_mobile.ui.chatbot.ChatbotActivity;
-import com.example.vivaapp_mobile.ui.product.Product;
+import com.example.vivaapp_mobile.model.Product;
 import com.example.vivaapp_mobile.ui.product.ProductAdapter;
 
 import java.util.ArrayList;

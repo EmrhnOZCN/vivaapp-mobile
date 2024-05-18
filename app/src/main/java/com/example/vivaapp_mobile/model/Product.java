@@ -1,4 +1,4 @@
-package com.example.vivaapp_mobile.ui.product;
+package com.example.vivaapp_mobile.model;
 
 public class Product {
     private int imageResource;

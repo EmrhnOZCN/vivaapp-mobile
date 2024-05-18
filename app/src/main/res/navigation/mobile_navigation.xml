@@ -13,13 +13,13 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.vivaapp_mobile.ui.category.DashboardFragment"
+        android:name="com.example.vivaapp_mobile.ui.category.CategoryFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_category" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.vivaapp_mobile.ui.cart.NotificationsFragment"
+        android:name="com.example.vivaapp_mobile.ui.cart.CartFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_card" />
 </navigation>
