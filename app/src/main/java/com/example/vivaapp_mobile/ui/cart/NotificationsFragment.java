@@ -1,5 +1,7 @@
-package com.example.vivaapp_mobile.ui.notifications;
+package com.example.vivaapp_mobile.ui.cart;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +18,9 @@ import com.example.vivaapp_mobile.R;
 import com.example.vivaapp_mobile.databinding.FragmentCardBinding;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class NotificationsFragment extends Fragment implements CartItemAdapter.OnItemQuantityChangeListener {
 
@@ -59,14 +63,13 @@ public class NotificationsFragment extends Fragment implements CartItemAdapter.O
         updateTotalPrice();
     }
 
-    // Sepet tutarını hesaplamak ve güncellemek için yöntem
     private void updateTotalPrice() {
         double totalPrice = calculateTotalPrice();
         String formattedTotalPrice = String.format("Toplam Tutar: %.2f TL", totalPrice);
         totalPriceTextView.setText(formattedTotalPrice);
     }
 
-    // Sepet tutarını hesaplamak için yöntem
+
     private double calculateTotalPrice() {
         double totalPrice = 0;
 
@@ -77,18 +80,22 @@ public class NotificationsFragment extends Fragment implements CartItemAdapter.O
         return totalPrice;
     }
 
-    // Method to get cart items from SharedPreferences
+
     private List<CartItem> getCartItemsFromSharedPreferences() {
         List<CartItem> cartItems = new ArrayList<>();
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("cart_prefs", Context.MODE_PRIVATE);
+        Set<String> productSet = sharedPreferences.getStringSet("products", new HashSet<>());
 
-        CartItem item = new CartItem("Ürün Adı", 24.99, "drawable/ettavuk.png.jpg", 4);
+        for (String productString : productSet) {
+            String[] parts = productString.split(",");
+            int imageResource = Integer.parseInt(parts[0]);
+            String name = parts[1];
+            double price = Double.parseDouble(parts[2]);
+            int quantity = Integer.parseInt(parts[3]);
 
-        cartItems.add(item);
-        cartItems.add(item);
-        cartItems.add(item);
-        CartItem item2 = new CartItem("Ürün Adı", 24.99, "drawable/ettavuk.png.jpg", 8);
-        cartItems.add(item2);
-        cartItems.add(item2);
+            CartItem item = new CartItem(name, price, imageResource, quantity);
+            cartItems.add(item);
+        }
 
         return cartItems;
     }

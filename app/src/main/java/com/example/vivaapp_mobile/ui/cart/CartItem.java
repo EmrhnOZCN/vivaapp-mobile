@@ -1,4 +1,4 @@
-package com.example.vivaapp_mobile.ui.notifications;
+package com.example.vivaapp_mobile.ui.cart;
 
 public class CartItem {
     private String name;
@@ -6,10 +6,10 @@ public class CartItem {
     private String imageUrl;
     private int quantity;
 
-    public CartItem(String name, double price, String imageUrl, int quantity) {
+    public CartItem(String name, double price, int imageUrl, int quantity) {
         this.name = name;
         this.price = price;
-        this.imageUrl = imageUrl;
+        this.imageUrl = String.valueOf(imageUrl);
         this.quantity = quantity;
     }
 

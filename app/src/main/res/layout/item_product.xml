@@ -71,7 +71,7 @@
             android:id="@+id/quantity_spinner"
             android:layout_width="0dp"
             android:layout_height="22dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintEnd_toStartOf="@id/add_to_cart_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/product_price" />

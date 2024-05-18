@@ -1,7 +1,8 @@
-package com.example.vivaapp_mobile.ui.notifications;
+package com.example.vivaapp_mobile.ui.cart;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vivaapp_mobile.R;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHolder> {
 
@@ -62,6 +65,11 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
                 int newQuantity = Integer.parseInt(parent.getItemAtPosition(pos).toString());
                 cartItem.setQuantity(newQuantity);
                 quantityChangeListener.onItemQuantityChange(position, newQuantity);
+
+
+                if (newQuantity == 0) {
+                    removeProductFromSharedPreferences(cartItem);
+                }
             }
 
             @Override
@@ -71,13 +79,35 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
         });
 
         holder.removeButton.setOnClickListener(view -> {
-            // Silme işlemleri
+            removeProductFromSharedPreferences(cartItem);
+            cartItemList.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, cartItemList.size());
         });
     }
 
     @Override
     public int getItemCount() {
         return cartItemList.size();
+    }
+
+    private void removeProductFromSharedPreferences(CartItem cartItem) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("cart_prefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+
+        Set<String> productSet = sharedPreferences.getStringSet("products", new HashSet<>());
+
+
+        String productStringToRemove = cartItem.getImageUrl() + "," + cartItem.getName() + "," + cartItem.getPrice() + "," + cartItem.getQuantity();
+
+
+        Set<String> updatedProductSet = new HashSet<>(productSet);
+        updatedProductSet.remove(productStringToRemove);
+
+
+        editor.putStringSet("products", updatedProductSet);
+        editor.apply();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
