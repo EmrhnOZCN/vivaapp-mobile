@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
+    android:textDirection="firstStrong"
     tools:context=".ui.cart.CartFragment">
 
 
@@ -33,8 +34,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="314dp"
-        android:layout_height="474dp"
+        android:layout_width="310dp"
+        android:layout_height="470dp"
         android:layout_marginTop="84dp"
         android:background="@color/gray_100"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,13 +43,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Sipariş tutarını gösteren alan ve Siparişi Onayla düğmesi -->
-    <!-- Sipariş tutarını gösteren alan ve Siparişi Onayla düğmesi -->
     <LinearLayout
         android:id="@+id/orderLayout"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="16dp"
+        android:layout_marginRight="15dp"
+        android:background="@color/gray_100"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,29 +63,31 @@
         <TextView
             android:id="@+id/orderSummaryText"
             android:layout_width="150dp"
-            android:layout_marginRight="50dp"
+            android:layout_height="55dp"
+            android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:text="Toplam Tutar: $0.00"
+            android:layout_marginRight="70dp"
+            android:background="@drawable/remove_button_background"
+
+            android:text="Toplam Tutar $0.00"
+            android:textAlignment="center"
+            android:textColor="@color/white"
             android:textSize="18sp" />
 
         <Button
             android:id="@+id/confirmOrderButton"
-            android:layout_width="60dp"
-            android:layout_height="40dp"
+            android:layout_width="95dp"
+            android:layout_height="55dp"
 
+            android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="26dp"
             android:background="@drawable/remove_button_background"
-            android:text="Siparişi Onayla"
+            android:text="Sepeti Onayla"
             android:textColor="@color/gray_150"
-            android:textSize="10sp"
-            android:layout_gravity="center_vertical"/>
+            android:textSize="12sp" />
 
     </LinearLayout>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

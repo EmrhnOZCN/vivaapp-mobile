@@ -48,7 +48,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         Product product = productList.get(position);
         holder.binding.productImage.setImageResource(product.getImageResource());
         holder.binding.productName.setText(product.getName());
-        holder.binding.productPrice.setText("$" + product.getPrice());
+        holder.binding.productPrice.setText( product.getPrice() + " TL" );
 
         String[] quantities = {"0", "1", "2", "3", "4", "5"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, quantities);

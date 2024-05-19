@@ -2,6 +2,7 @@ package com.example.vivaapp_mobile.ui.product;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -11,30 +12,36 @@ import com.example.vivaapp_mobile.MainActivity;
 import com.example.vivaapp_mobile.R;
 import com.example.vivaapp_mobile.databinding.ActivityProductBinding;
 import com.example.vivaapp_mobile.model.Product;
+import com.example.vivaapp_mobile.model.repository.DatabaseHelper;
+import com.example.vivaapp_mobile.model.repository.ProductRepository;
 import com.example.vivaapp_mobile.ui.chatbot.ChatbotActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProductActivity extends AppCompatActivity {
-
+    private DatabaseHelper databaseHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityProductBinding binding = ActivityProductBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        databaseHelper = new DatabaseHelper(this);
 
-        // Get the selected category from the intent
+       // addSampleProducts();
+
         String category = getIntent().getStringExtra("CATEGORY");
 
-        // Enable edge-to-edge (if applicable)
-        // EdgeToEdge.enable(this);
+        // category1'e eşitse category değişkenini "Et, Tavuk, Balık" yap
+        if ("category1".equals(category)) {
+            category = "Meyve";
+        }
 
         RecyclerView recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
 
-        // Load products based on the selected category
         List<Product> productList = getProductsByCategory(category);
+        System.out.println(category);
 
         ProductAdapter adapter = new ProductAdapter(this, productList);
         recyclerView.setAdapter(adapter);
@@ -47,33 +54,49 @@ public class ProductActivity extends AppCompatActivity {
     }
 
     private List<Product> getProductsByCategory(String category) {
-        List<Product> productList = new ArrayList<>();
+        ProductRepository productRepository = new ProductRepository(databaseHelper);
+        return productRepository.getAllProducts();
+    }
 
-        // Example data - replace with real product fetching logic
-        if ("category1".equals(category)) {
-            productList.add(new Product(R.drawable.fo, "Product 1", 19.99));
-            productList.add(new Product(R.drawable.fo, "Product 3", 19.99));
-            productList.add(new Product(R.drawable.fo, "Product 5", 19.99));
-        } else if ("category2".equals(category)) {
-            productList.add(new Product(R.drawable.ettavuk, "Product 2", 29.99));
-            productList.add(new Product(R.drawable.ettavuk, "Product 4", 29.99));
-            productList.add(new Product(R.drawable.ettavuk, "Product 6", 29.99));
-            productList.add(new Product(R.drawable.ettavuk, "Product 2", 29.99));
-            productList.add(new Product(R.drawable.ettavuk, "Product 4", 29.99));
-            productList.add(new Product(R.drawable.ettavuk, "Product 6", 29.99));
-            productList.add(new Product(R.drawable.ettavuk, "Product 2", 29.99));
-            productList.add(new Product(R.drawable.ettavuk, "Product 4", 29.99));
-            productList.add(new Product(R.drawable.ettavuk, "Product 6", 29.99));
-            productList.add(new Product(R.drawable.ettavuk, "Product 2", 29.99));
-            productList.add(new Product(R.drawable.ettavuk, "Product 4", 29.99));
-            productList.add(new Product(R.drawable.ettavuk, "Product 6", 29.99));
-            productList.add(new Product(R.drawable.ettavuk, "Product 2", 29.99));
-            productList.add(new Product(R.drawable.ettavuk, "Product 4", 29.99));
-            productList.add(new Product(R.drawable.ettavuk, "Product 6", 29.99));
-        }
 
-        // Add more categories as needed
 
-        return productList;
+    private void addSampleProducts() {
+        Product product1 = new Product(R.drawable.producttavuk, "Piliç Baget ", 119.99, "Et");
+        Product product2 = new Product(R.drawable.productdanakuzu, "Dana Kıymalık  ", 419.99, "Et");
+        Product product3 = new Product(R.drawable.productlevrek, "Levrek", 319.99, "Et");
+
+        Product product4 = new Product(R.drawable.productseftali ,"Şeftali", 29.99, "Meyve");
+        Product product5 = new Product(R.drawable.productlimon ,"Limon", 39.99, "Meyve");
+        Product product6 = new Product(R.drawable.productbiber ,"Biber", 19.99, "Meyve");
+
+        Product product7 = new Product(R.drawable.producticetea ,"İce Tea", 36.50, "Icecek");
+        Product product8 = new Product(R.drawable.productsu ,"Su", 8.95, "Icecek");
+        Product product9 = new Product(R.drawable.productbeypazari ,"Beypazarı", 1.99, "Icecek");
+
+        Product product10 = new Product(R.drawable.productun ,"Un", 33.50, "TemelGida");
+        Product product11 = new Product(R.drawable.productpirinc ,"Pirinç", 18.45, "TemelGida");
+        Product product12 = new Product(R.drawable.productmakarna ,"Makarna", 5.99, "TemelGida");
+
+
+        Product product13 = new Product(R.drawable.productyumasitici ,"Yumuşatıcı", 73.50, "Deterjan");
+        Product product14 = new Product(R.drawable.productcamasirsuyu ,"Çamaşır Suyu", 28.45, "Deterjan");
+
+        Product product15 = new Product(R.drawable.producttost ,"Tost Ekmeği", 12.50, "Firin");
+
+        databaseHelper.addProduct(product1);
+        databaseHelper.addProduct(product2);
+        databaseHelper.addProduct(product3);
+        databaseHelper.addProduct(product4);
+        databaseHelper.addProduct(product5);
+        databaseHelper.addProduct(product6);
+        databaseHelper.addProduct(product7);
+        databaseHelper.addProduct(product8);
+        databaseHelper.addProduct(product9);
+        databaseHelper.addProduct(product10);
+        databaseHelper.addProduct(product11);
+        databaseHelper.addProduct(product12);
+        databaseHelper.addProduct(product13);
+        databaseHelper.addProduct(product14);
+        databaseHelper.addProduct(product15);
     }
 }

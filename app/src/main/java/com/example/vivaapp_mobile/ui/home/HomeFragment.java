@@ -44,12 +44,9 @@ public class HomeFragment extends Fragment {
 
         List<Product> productList = new ArrayList<>();
 
-        productList.add(new Product(R.drawable.fo, "Product 1", 19.99));
-        productList.add(new Product(R.drawable.ettavuk, "Product 2", 29.99));
-        productList.add(new Product(R.drawable.fo, "Product 3", 19.99));
-        productList.add(new Product(R.drawable.ettavuk, "Product 4", 29.99));
-        productList.add(new Product(R.drawable.fo, "Product 5", 19.99));
-        productList.add(new Product(R.drawable.ettavuk, "Product 6", 29.99));
+        productList.add(new Product(R.drawable.fo, "Product 1", 19.99,"Et, Tavuk, Balık"));
+        productList.add(new Product(R.drawable.ettavuk, "Product 2", 29.99,"Meyve, Sebze"));
+        productList.add(new Product(R.drawable.fo, "Product 3", 19.99,"İçecek"));
 
 
         ProductAdapter adapter = new ProductAdapter(getContext(), productList);
