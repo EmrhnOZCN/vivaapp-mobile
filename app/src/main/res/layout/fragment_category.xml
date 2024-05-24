@@ -14,19 +14,19 @@
         android:layout_height="118dp"
         android:layout_marginBottom="68dp"
         android:background="@drawable/half_circle"
-        app:layout_constraintBottom_toTopOf="@+id/category2"
+        app:layout_constraintBottom_toTopOf="@+id/Et"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/category1"
+        android:id="@+id/Meyve"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="172dp"
         app:cardCornerRadius="26dp"
         app:cardElevation="4dp"
-        app:layout_constraintEnd_toStartOf="@+id/category2"
+        app:layout_constraintEnd_toStartOf="@+id/Et"
         app:layout_constraintHorizontal_bias="0.518"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -56,7 +56,7 @@
 
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/category2"
+        android:id="@+id/Et"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="172dp"
@@ -64,9 +64,9 @@
 
         app:cardCornerRadius="26dp"
         app:cardElevation="4dp"
-        app:layout_constraintEnd_toStartOf="@+id/category3"
+        app:layout_constraintEnd_toStartOf="@+id/Icecek"
         app:layout_constraintHorizontal_bias="0.53"
-        app:layout_constraintStart_toEndOf="@+id/category4"
+        app:layout_constraintStart_toEndOf="@+id/TemelGida"
         app:layout_constraintTop_toTopOf="parent"
         >
 
@@ -95,7 +95,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/category3"
+        android:id="@+id/Icecek"
         android:layout_width="95dp"
         android:layout_height="100dp"
 
@@ -105,7 +105,7 @@
         app:cardElevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.416"
-        app:layout_constraintStart_toEndOf="@+id/category5"
+        app:layout_constraintStart_toEndOf="@+id/Deterjan"
         app:layout_constraintTop_toTopOf="parent"  >
 
         <LinearLayout
@@ -133,17 +133,17 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/category4"
+        android:id="@+id/TemelGida"
         android:layout_width="95dp"
         android:layout_height="100dp"
         android:layout_marginTop="36dp"
 
         app:cardCornerRadius="26dp"
         app:cardElevation="4dp"
-        app:layout_constraintEnd_toStartOf="@+id/category5"
+        app:layout_constraintEnd_toStartOf="@+id/Deterjan"
         app:layout_constraintHorizontal_bias="0.465"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/category1"  >
+        app:layout_constraintTop_toBottomOf="@+id/Meyve"  >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -170,7 +170,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/category5"
+        android:id="@+id/Deterjan"
         android:layout_width="95dp"
         android:layout_height="100dp"
         android:layout_marginEnd="24dp"
@@ -178,8 +178,8 @@
         app:cardCornerRadius="26dp"
         app:cardElevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/category6"
-        app:layout_constraintTop_toBottomOf="@+id/category2"
+        app:layout_constraintEnd_toStartOf="@+id/Firin"
+        app:layout_constraintTop_toBottomOf="@+id/Et"
         app:layout_constraintVertical_bias="0.118" >
 
         <LinearLayout
@@ -207,7 +207,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/category6"
+        android:id="@+id/Firin"
         android:layout_width="95dp"
         android:layout_height="100dp"
         android:layout_marginEnd="28dp"
@@ -216,7 +216,7 @@
         app:cardElevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/category3"
+        app:layout_constraintTop_toBottomOf="@+id/Icecek"
         app:layout_constraintVertical_bias="0.118" >
 
         <LinearLayout

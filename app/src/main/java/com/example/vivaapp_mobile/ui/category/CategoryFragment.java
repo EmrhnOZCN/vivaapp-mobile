@@ -27,20 +27,49 @@ public class CategoryFragment extends Fragment {
         View root = binding.getRoot();
 
         // Set onClickListener for category1
-        binding.category1.setOnClickListener(new View.OnClickListener() {
+        binding.Meyve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("DashboardFragment", "Clicked on category1");
-                openProductActivity("category1");
+                openProductActivity("Meyve");
             }
         });
 
         // Set onClickListener for category2
-        binding.category2.setOnClickListener(new View.OnClickListener() {
+        binding.Et.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("DashboardFragment", "Clicked on category2");
-                openProductActivity("category2");
+                Log.d("DashboardFragment", "Clicked on Et");
+                openProductActivity("Et");
+            }
+        });
+        binding.Icecek.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("DashboardFragment", "Clicked on Icecek");
+                openProductActivity("Icecek");
+            }
+        });
+        binding.TemelGida.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("DashboardFragment", "Clicked on TemelGida");
+                openProductActivity("TemelGida");
+            }
+        });
+        binding.Deterjan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("DashboardFragment", "Clicked on Icecek");
+                openProductActivity("Deterjan");
+            }
+        });
+
+        binding.Firin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("DashboardFragment", "Clicked on Firin");
+                openProductActivity("Firin");
             }
         });
 

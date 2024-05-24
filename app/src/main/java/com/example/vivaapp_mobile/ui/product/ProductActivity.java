@@ -32,10 +32,7 @@ public class ProductActivity extends AppCompatActivity {
 
         String category = getIntent().getStringExtra("CATEGORY");
 
-        // category1'e eşitse category değişkenini "Et, Tavuk, Balık" yap
-        if ("category1".equals(category)) {
-            category = "Meyve";
-        }
+
 
         RecyclerView recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
@@ -55,7 +52,7 @@ public class ProductActivity extends AppCompatActivity {
 
     private List<Product> getProductsByCategory(String category) {
         ProductRepository productRepository = new ProductRepository(databaseHelper);
-        return productRepository.getAllProducts();
+        return productRepository.getProductsByCategory(category);
     }
 
 
