@@ -95,6 +95,37 @@
             return result;
         }
 
+        // Kullanıcı bilgilerini almak için metod
+        public User getUserByEmail(String email) {
+            SQLiteDatabase db = this.getReadableDatabase();
+            String query = "SELECT * FROM " + TABLE_USERS + " WHERE " + COLUMN_EPOSTA + "=?";
+            Cursor cursor = db.rawQuery(query, new String[]{email});
+
+            if (cursor != null && cursor.moveToFirst()) {
+                int adIndex = cursor.getColumnIndex(COLUMN_AD);
+                int soyadIndex = cursor.getColumnIndex(COLUMN_SOYAD);
+                int epostaIndex = cursor.getColumnIndex(COLUMN_EPOSTA);
+
+                // Hata kontrolü ekleyelim
+                if (adIndex != -1 && soyadIndex != -1 && epostaIndex != -1) {
+                    String ad = cursor.getString(adIndex);
+                    String soyad = cursor.getString(soyadIndex);
+                    String eposta = cursor.getString(epostaIndex);
+                    cursor.close();
+                    return new User(ad, soyad, eposta);
+                } else {
+                    cursor.close();
+                    Log.e("DatabaseHelper", "Sütun adları bulunamadı.");
+                    return null;
+                }
+            }
+
+            if (cursor != null) {
+                cursor.close();
+            }
+            return null;
+        }
+
         // Ürün ekleme işlemi
         public long addProduct(Product product) {
             SQLiteDatabase db = this.getWritableDatabase();

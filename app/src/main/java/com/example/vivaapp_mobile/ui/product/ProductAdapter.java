@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,7 +49,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         Product product = productList.get(position);
         holder.binding.productImage.setImageResource(product.getImageResource());
         holder.binding.productName.setText(product.getName());
-        holder.binding.productPrice.setText( product.getPrice() + " TL" );
+        holder.binding.productPrice.setText(product.getPrice() + " TL");
 
         String[] quantities = {"0", "1", "2", "3", "4", "5"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, quantities);
@@ -65,14 +66,25 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             holder.binding.quantitySpinner.setVisibility(View.GONE);
         }
 
+        // Kullanıcı giriş yapmamışsa spinner'ı gösterme
+        SharedPreferences userPrefs = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        boolean isLogin = userPrefs.getBoolean("isLogin", false);
+        if (!isLogin) {
+            holder.binding.quantitySpinner.setVisibility(View.GONE);
+        }
+
         holder.binding.addToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.binding.quantitySpinner.setVisibility(View.VISIBLE);
-                holder.binding.quantitySpinner.setSelection(1);
-                holder.binding.addToCartButton.setVisibility(View.GONE);
+                if (isLogin) {
+                    holder.binding.quantitySpinner.setVisibility(View.VISIBLE);
+                    holder.binding.quantitySpinner.setSelection(1);
+                    holder.binding.addToCartButton.setVisibility(View.GONE);
 
-                saveProductToSharedPreferences(product, 1);
+                    saveProductToSharedPreferences(product, 1);
+                } else {
+                    Toast.makeText(context, "Ürün eklemek için giriş yapmalısınız", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -87,7 +99,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                     holder.binding.addToCartButton.setVisibility(View.GONE);
                     holder.binding.quantitySpinner.setVisibility(View.VISIBLE);
 
-                    saveProductToSharedPreferences(product, selectedPosition);
+                    if (isLogin) {
+                        saveProductToSharedPreferences(product, selectedPosition);
+                    } else {
+                        Toast.makeText(context, "Ürün eklemek için giriş yapmalısınız", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
@@ -103,39 +119,42 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     }
 
     private void saveProductToSharedPreferences(Product product, int quantity) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("cart_prefs", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        // Kullanıcının giriş yapmış olup olmadığını kontrol et
+        SharedPreferences userPrefs = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        boolean isLogin = userPrefs.getBoolean("isLogin", false);
 
+        if (isLogin) {
+            SharedPreferences sharedPreferences = context.getSharedPreferences("cart_prefs", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        Set<String> productSet = sharedPreferences.getStringSet("products", new HashSet<>());
+            Set<String> productSet = sharedPreferences.getStringSet("products", new HashSet<>());
 
+            String newProductString = product.getImageResource() + "," + product.getName() + "," + product.getPrice() + "," + quantity;
 
-        String newProductString = product.getImageResource() + "," + product.getName() + "," + product.getPrice() + "," + quantity;
-
-
-        Set<String> updatedProductSet = new HashSet<>();
-        boolean productExists = false;
-        for (String productString : productSet) {
-            String[] parts = productString.split(",");
-            String productName = parts[1];
-            if (productName.equals(product.getName())) {
-
-                updatedProductSet.add(newProductString);
-                productExists = true;
-            } else {
-                updatedProductSet.add(productString);
+            // Ürün zaten varsa güncelle, yoksa ekle
+            boolean productExists = false;
+            for (String productString : productSet) {
+                String[] parts = productString.split(",");
+                String productName = parts[1];
+                if (productName.equals(product.getName())) {
+                    productSet.remove(productString); // Önce eski ürünü kaldır
+                    productSet.add(newProductString); // Yeni ürünü ekle
+                    productExists = true;
+                    break;
+                }
             }
+
+            if (!productExists) {
+                productSet.add(newProductString);
+            }
+
+            editor.putStringSet("products", productSet);
+            editor.apply();
+        } else {
+            Toast.makeText(context, "Ürün eklemek için giriş yapmalısınız", Toast.LENGTH_SHORT).show();
         }
-
-        if (!productExists) {
-
-            updatedProductSet.add(newProductString);
-        }
-
-
-        editor.putStringSet("products", updatedProductSet);
-        editor.apply();
     }
+
 
     private void removeProductFromSharedPreferences(Product product) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("cart_prefs", Context.MODE_PRIVATE);

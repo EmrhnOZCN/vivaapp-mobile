@@ -1,7 +1,17 @@
 package com.example.vivaapp_mobile.model;
 
 public class User {
+    public User() {
 
+
+    }
+
+    public User(String ad, String soyad, String eposta) {
+
+        this.ad = ad;
+        this.soyad=soyad;
+        this.eposta = eposta;
+    }
     private int id;
     private String ad;
 
@@ -14,6 +24,8 @@ public class User {
     private String eposta;
 
     private String sifre;
+
+
 
 
     public int getId() {

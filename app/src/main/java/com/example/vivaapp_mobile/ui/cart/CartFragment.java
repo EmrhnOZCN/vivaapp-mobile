@@ -59,6 +59,32 @@ public class CartFragment extends Fragment implements CartItemAdapter.OnItemQuan
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        // Kullanıcı çıkış yaptıysa sepet öğelerini temizle
+        SharedPreferences userPrefs = requireContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        boolean isLogin = userPrefs.getBoolean("isLogin", false);
+        if (!isLogin) {
+            clearCartItems();
+        }
+    }
+
+    private void clearCartItems() {
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("cart_prefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("products");
+        editor.apply();
+
+        // RecyclerView'ı güncelle
+        cartItems.clear();
+        adapter.notifyDataSetChanged();
+
+        // Toplam tutarı güncelle
+        updateTotalPrice();
+    }
+
+    @Override
     public void onItemQuantityChange(int position, int newQuantity) {
         cartItems.get(position).setQuantity(newQuantity);
         updateTotalPrice();
@@ -70,7 +96,6 @@ public class CartFragment extends Fragment implements CartItemAdapter.OnItemQuan
         totalPriceTextView.setText(formattedTotalPrice);
     }
 
-
     private double calculateTotalPrice() {
         double totalPrice = 0;
 
@@ -80,7 +105,6 @@ public class CartFragment extends Fragment implements CartItemAdapter.OnItemQuan
 
         return totalPrice;
     }
-
 
     private List<CartItem> getCartItemsFromSharedPreferences() {
         List<CartItem> cartItems = new ArrayList<>();

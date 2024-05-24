@@ -1,11 +1,15 @@
 package com.example.vivaapp_mobile.ui.home;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -61,6 +65,46 @@ public class HomeFragment extends Fragment {
                 // Sepete ekleme işlemi burada gerçekleştirilir
                 // Örnek olarak:
                 addToCart(clickedProduct);
+            }
+        });
+
+
+
+
+        // Kullanıcı giriş durumunu kontrol et
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        boolean isLogin = sharedPreferences.getBoolean("isLogin", false);
+
+        if (isLogin) {
+            String userName = sharedPreferences.getString("userName", "");
+            String userSurname = sharedPreferences.getString("userSurname", "");
+            String userEmail = sharedPreferences.getString("userEmail", "");
+
+        }
+        if (isLogin) {
+            binding.girisButon.setVisibility(View.GONE);
+            binding.cikisButon.setVisibility(View.VISIBLE);
+        } else {
+            binding.girisButon.setVisibility(View.VISIBLE);
+            binding.cikisButon.setVisibility(View.GONE);
+        }
+
+        // Çıkış yap butonuna tıklama işlemi
+        binding.cikisButon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Kullanıcının çıkış yaptığını SharedPreferences'a kaydet
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("isLogin", false);
+                editor.remove("userName");
+                editor.remove("userSurname");
+                editor.remove("userEmail");
+                editor.apply();
+
+                // Ana sayfayı yeniden yükleyin veya gerekli işlemleri yapın
+                binding.girisButon.setVisibility(View.VISIBLE);
+                binding.cikisButon.setVisibility(View.GONE);
+                Toast.makeText(getContext(), "Çıkış yapıldı", Toast.LENGTH_SHORT).show();
             }
         });
 
