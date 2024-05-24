@@ -96,6 +96,7 @@ public class HomeFragment extends Fragment {
                 // Kullanıcının çıkış yaptığını SharedPreferences'a kaydet
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putBoolean("isLogin", false);
+                editor.remove("userId");
                 editor.remove("userName");
                 editor.remove("userSurname");
                 editor.remove("userEmail");

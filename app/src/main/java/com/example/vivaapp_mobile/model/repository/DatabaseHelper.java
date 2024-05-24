@@ -17,7 +17,7 @@
 
         private Context context;
         private static final String DATABASE_NAME = "viva.db";
-        private static final int DATABASE_VERSION = 2;
+        private static final int DATABASE_VERSION = 3;
 
         // Kullanıcı Tablosu
          static final String TABLE_USERS = "users";
@@ -36,6 +36,14 @@
          static final String COLUMN_NAME = "name";
          static final String COLUMN_PRICE = "price";
          static final String COLUMN_CATEGORY_NAME = "categoryName";
+
+        // Sipariş Tablosu
+        static final String TABLE_ORDERS = "orders";
+        static final String COLUMN_ORDER_ID = "order_id";
+        static final String COLUMN_USER_ID_FK = "user_id_fk";
+        static final String COLUMN_PRODUCT_ID_FK = "product_id_fk";
+        static final String COLUMN_QUANTITY = "quantity";
+        static final String COLUMN_ORDER_DATE = "order_date";
 
         public DatabaseHelper(@Nullable Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -64,6 +72,17 @@
                     COLUMN_PRICE + " TEXT NOT NULL, " +
                     COLUMN_CATEGORY_NAME + " TEXT);";
             db.execSQL(createProductTableQuery);
+
+            // Sipariş tablosu oluşturma sorgusu
+            String createOrderTableQuery = "CREATE TABLE " + TABLE_ORDERS + " (" +
+                    COLUMN_ORDER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_USER_ID_FK + " INTEGER, " +
+                    COLUMN_PRODUCT_ID_FK + " INTEGER, " +
+                    COLUMN_QUANTITY + " INTEGER, " +
+                    COLUMN_ORDER_DATE + " TEXT, " +
+                    "FOREIGN KEY(" + COLUMN_USER_ID_FK + ") REFERENCES " + TABLE_USERS + "(" + COLUMN_USER_ID + "), " +
+                    "FOREIGN KEY(" + COLUMN_PRODUCT_ID_FK + ") REFERENCES " + TABLE_PRODUCTS + "(" + COLUMN_PRODUCT_ID + "));";
+            db.execSQL(createOrderTableQuery);
         }
 
         @Override
@@ -102,17 +121,19 @@
             Cursor cursor = db.rawQuery(query, new String[]{email});
 
             if (cursor != null && cursor.moveToFirst()) {
+                int idIndex = cursor.getColumnIndex(COLUMN_USER_ID); // Kullanıcı kimliği sütunu
                 int adIndex = cursor.getColumnIndex(COLUMN_AD);
                 int soyadIndex = cursor.getColumnIndex(COLUMN_SOYAD);
                 int epostaIndex = cursor.getColumnIndex(COLUMN_EPOSTA);
 
                 // Hata kontrolü ekleyelim
-                if (adIndex != -1 && soyadIndex != -1 && epostaIndex != -1) {
+                if (idIndex != -1 && adIndex != -1 && soyadIndex != -1 && epostaIndex != -1) {
+                    int id = cursor.getInt(idIndex); // Kullanıcı kimliğini al
                     String ad = cursor.getString(adIndex);
                     String soyad = cursor.getString(soyadIndex);
                     String eposta = cursor.getString(epostaIndex);
                     cursor.close();
-                    return new User(ad, soyad, eposta);
+                    return new User(id, ad, soyad, eposta);
                 } else {
                     cursor.close();
                     Log.e("DatabaseHelper", "Sütun adları bulunamadı.");

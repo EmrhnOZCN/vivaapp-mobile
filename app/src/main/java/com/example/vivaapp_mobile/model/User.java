@@ -6,10 +6,10 @@ public class User {
 
     }
 
-    public User(String ad, String soyad, String eposta) {
-
+    public User(int id, String ad, String soyad, String eposta) {
+        this.id = id;
         this.ad = ad;
-        this.soyad=soyad;
+        this.soyad = soyad;
         this.eposta = eposta;
     }
     private int id;

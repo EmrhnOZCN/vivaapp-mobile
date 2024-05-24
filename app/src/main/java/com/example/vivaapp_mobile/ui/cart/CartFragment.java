@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.vivaapp_mobile.R;
 import com.example.vivaapp_mobile.databinding.FragmentCardBinding;
 import com.example.vivaapp_mobile.model.CartItem;
+import com.example.vivaapp_mobile.model.OrderItem;
+import com.example.vivaapp_mobile.model.repository.DatabaseHelper;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -30,6 +32,8 @@ public class CartFragment extends Fragment implements CartItemAdapter.OnItemQuan
     private CartItemAdapter adapter;
     private TextView totalPriceTextView;
     private List<CartItem> cartItems;
+
+    private DatabaseHelper databaseHelper;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -65,6 +69,7 @@ public class CartFragment extends Fragment implements CartItemAdapter.OnItemQuan
         // Kullanıcı çıkış yaptıysa sepet öğelerini temizle
         SharedPreferences userPrefs = requireContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
         boolean isLogin = userPrefs.getBoolean("isLogin", false);
+        String userId = userPrefs.getString("userId", "");
         if (!isLogin) {
             clearCartItems();
         }
@@ -124,4 +129,6 @@ public class CartFragment extends Fragment implements CartItemAdapter.OnItemQuan
 
         return cartItems;
     }
+
+
 }

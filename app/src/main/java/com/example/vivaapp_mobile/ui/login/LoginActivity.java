@@ -70,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putBoolean("isLogin", true);
+                    editor.putInt("userId", user.getId());
                     editor.putString("userName", user.getAd());
                     editor.putString("userSurname", user.getSoyad());
                     editor.putString("userEmail", user.getEposta());
