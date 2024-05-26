@@ -17,7 +17,7 @@
 
         private Context context;
         private static final String DATABASE_NAME = "viva.db";
-        private static final int DATABASE_VERSION = 3;
+        private static final int DATABASE_VERSION = 6;
 
         // Kullanıcı Tablosu
          static final String TABLE_USERS = "users";
@@ -41,9 +41,20 @@
         static final String TABLE_ORDERS = "orders";
         static final String COLUMN_ORDER_ID = "order_id";
         static final String COLUMN_USER_ID_FK = "user_id_fk";
-        static final String COLUMN_PRODUCT_ID_FK = "product_id_fk";
+        static final String COLUMN_PRODUCTS = "products";
         static final String COLUMN_QUANTITY = "quantity";
         static final String COLUMN_ORDER_DATE = "order_date";
+
+
+
+        // ChatBot Tablosu
+        // ChatBot Tablosu
+        static final String TABLE_CHATBOT = "chatbot";
+        static final String COLUMN_CHATBOT_ID = "id";
+        static final String COLUMN_FOOD_NAME = "foodName";
+        static final String COLUMN_MATERIALS = "materials";
+        static final String COLUMN_VIDEO_URL = "videoUrl";
+
 
         public DatabaseHelper(@Nullable Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -77,12 +88,21 @@
             String createOrderTableQuery = "CREATE TABLE " + TABLE_ORDERS + " (" +
                     COLUMN_ORDER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COLUMN_USER_ID_FK + " INTEGER, " +
-                    COLUMN_PRODUCT_ID_FK + " INTEGER, " +
+                    COLUMN_PRODUCTS + " TEXT, " +
                     COLUMN_QUANTITY + " INTEGER, " +
                     COLUMN_ORDER_DATE + " TEXT, " +
-                    "FOREIGN KEY(" + COLUMN_USER_ID_FK + ") REFERENCES " + TABLE_USERS + "(" + COLUMN_USER_ID + "), " +
-                    "FOREIGN KEY(" + COLUMN_PRODUCT_ID_FK + ") REFERENCES " + TABLE_PRODUCTS + "(" + COLUMN_PRODUCT_ID + "));";
+                    "FOREIGN KEY(" + COLUMN_USER_ID_FK + ") REFERENCES " + TABLE_USERS + "(" + COLUMN_USER_ID + "));";
+
             db.execSQL(createOrderTableQuery);
+
+
+            // ChatBot tablosu oluşturma sorgusu
+            String createChatBotTableQuery = "CREATE TABLE " + TABLE_CHATBOT + " (" +
+                    COLUMN_CHATBOT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_FOOD_NAME + " TEXT NOT NULL, " +
+                    COLUMN_MATERIALS + " TEXT, " +
+                    COLUMN_VIDEO_URL + " TEXT);";
+            db.execSQL(createChatBotTableQuery);
         }
 
         @Override

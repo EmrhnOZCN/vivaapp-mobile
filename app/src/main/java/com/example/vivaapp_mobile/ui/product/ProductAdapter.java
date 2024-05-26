@@ -129,7 +129,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
             Set<String> productSet = sharedPreferences.getStringSet("products", new HashSet<>());
 
-            String newProductString = product.getImageResource() + "," + product.getName() + "," + product.getPrice() + "," + quantity;
+            String newProductString =  product.getImageResource() + "," + product.getName() + "," + product.getPrice() + "," + quantity;
 
             // Ürün zaten varsa güncelle, yoksa ekle
             boolean productExists = false;

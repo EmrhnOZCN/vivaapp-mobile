@@ -3,6 +3,7 @@ package com.example.vivaapp_mobile.ui.cart;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -10,6 +11,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.vivaapp_mobile.model.CartItem;
+import com.example.vivaapp_mobile.model.repository.OrderRepository;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -74,4 +76,35 @@ public class CartViewModel extends AndroidViewModel {
 
         return cartItems;
     }
+    private void clearCart() {
+        // Sepetinizi temizlemek için SharedPreferences kullanın
+        SharedPreferences sharedPreferences = getApplication().getSharedPreferences("cart_prefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("products");
+        editor.apply();
+
+        // LiveData'yı güncelleyerek sepeti boşaltın
+        cartItems.setValue(new ArrayList<>());
+        totalPrice.setValue(0.0);
+    }
+
+
+    public void confirmOrder(int userId, String[] productNames, int quantity, String orderDate) {
+        // Siparişi veritabanına eklemek için OrderRepository sınıfını kullanın.
+        OrderRepository orderRepository = new OrderRepository(getApplication());
+        long result = orderRepository.addOrder(userId, productNames, quantity, orderDate);
+
+        if (result != -1) {
+            // Sepet başarıyla temizlendi ve sipariş alındı, bu yüzden Toast mesajı gösterin
+            Toast.makeText(getApplication(), "Siparişiniz başarıyla alınmıştır.", Toast.LENGTH_SHORT).show();
+
+            // Sepeti temizle
+            clearCart();
+
+            // Ana sayfaya geri dön
+
+        }
+    }
+
+
 }

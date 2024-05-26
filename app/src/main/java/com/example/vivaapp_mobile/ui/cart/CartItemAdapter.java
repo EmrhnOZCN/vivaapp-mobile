@@ -53,7 +53,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
         CartItem cartItem = cartItemList.get(position);
         holder.productName.setText(cartItem.getName());
         holder.productPrice.setText(String.format("%.2f", cartItem.getPrice()));
-
+        holder.productImage.setImageResource(Integer.parseInt(cartItem.getImageUrl()));
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context,
                 R.array.quantity_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -80,6 +80,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
             cartItemList.remove(position);
             notifyItemRemoved(position);
             notifyItemRangeChanged(position, cartItemList.size());
+
         });
     }
 
@@ -133,7 +134,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
         // Create a string representation of the product to be removed
         String productStringToRemove = cartItem.getImageUrl() + "," + cartItem.getName() + "," + cartItem.getPrice() + "," + cartItem.getQuantity();
 
-        // Remove the product string from the set
+        // Remove the produxct string from the set
         Set<String> updatedProductSet = new HashSet<>(productSet);
         updatedProductSet.remove(productStringToRemove);
 

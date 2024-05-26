@@ -1,29 +1,37 @@
 package com.example.vivaapp_mobile.model;
 
 public class OrderItem {
-    private String productName;
-    private double price;
+    private int orderId;
+    private int userId;
+    private String[] products;
     private int quantity;
+    private String orderDate;
 
-    public OrderItem(String productName, double price, int quantity) {
-        this.productName = productName;
-        this.price = price;
+    public OrderItem(int orderId, int userId, String[] products, int quantity, String orderDate) {
+        this.orderId = orderId;
+        this.userId = userId;
+        this.products = products;
         this.quantity = quantity;
+        this.orderDate = orderDate;
     }
 
-    public OrderItem(int orderId, int userId, int productId, int quantity, String orderDate) {
-
+    public int getOrderId() {
+        return orderId;
     }
 
-    public String getProductName() {
-        return productName;
+    public int getUserId() {
+        return userId;
     }
 
-    public double getPrice() {
-        return price;
+    public String[] getProducts() {
+        return products;
     }
 
     public int getQuantity() {
         return quantity;
+    }
+
+    public String getOrderDate() {
+        return orderDate;
     }
 }

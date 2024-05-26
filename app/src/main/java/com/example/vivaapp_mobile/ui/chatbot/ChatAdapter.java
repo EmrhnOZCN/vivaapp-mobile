@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vivaapp_mobile.R;
+import com.example.vivaapp_mobile.model.ChatMessage;
 
 import java.util.List;
 

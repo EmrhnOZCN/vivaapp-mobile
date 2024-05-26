@@ -3,6 +3,7 @@ package com.example.vivaapp_mobile.ui.cart;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +23,7 @@ import com.example.vivaapp_mobile.model.OrderItem;
 import com.example.vivaapp_mobile.model.repository.DatabaseHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -59,6 +62,33 @@ public class CartFragment extends Fragment implements CartItemAdapter.OnItemQuan
         // Sepet tutarını hesapla ve güncelle
         updateTotalPrice();
 
+        binding.confirmOrderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Kullanıcı bilgilerini SharedPreferences'ten alın
+                SharedPreferences userPrefs = requireContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+                int userId = userPrefs.getInt("userId", -1);
+
+                // Sepeti onaylayın ve siparişi gönderin
+                List<CartItem> items = getCartItemsFromSharedPreferences();
+                String[] productNames = new String[items.size()];
+                for (int i = 0; i < items.size(); i++) {
+                    productNames[i] = items.get(i).getName();
+                }
+                int quantity = (int) calculateTotalPrice();
+                String orderDate = String.valueOf(new Date()); // Sipariş tarihini belirleyin
+
+
+
+                notificationsViewModel.confirmOrder(userId, productNames, quantity, orderDate);
+
+                requireActivity().getSupportFragmentManager().popBackStack();
+
+            }
+        });
+
+
+
         return root;
     }
 
@@ -69,7 +99,7 @@ public class CartFragment extends Fragment implements CartItemAdapter.OnItemQuan
         // Kullanıcı çıkış yaptıysa sepet öğelerini temizle
         SharedPreferences userPrefs = requireContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
         boolean isLogin = userPrefs.getBoolean("isLogin", false);
-        String userId = userPrefs.getString("userId", "");
+
         if (!isLogin) {
             clearCartItems();
         }
@@ -119,6 +149,7 @@ public class CartFragment extends Fragment implements CartItemAdapter.OnItemQuan
         for (String productString : productSet) {
             String[] parts = productString.split(",");
             int imageResource = Integer.parseInt(parts[0]);
+
             String name = parts[1];
             double price = Double.parseDouble(parts[2]);
             int quantity = Integer.parseInt(parts[3]);
@@ -127,8 +158,11 @@ public class CartFragment extends Fragment implements CartItemAdapter.OnItemQuan
             cartItems.add(item);
         }
 
+
         return cartItems;
     }
+
+
 
 
 }

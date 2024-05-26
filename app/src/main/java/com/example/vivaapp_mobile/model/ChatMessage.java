@@ -1,4 +1,4 @@
-package com.example.vivaapp_mobile.ui.chatbot;
+package com.example.vivaapp_mobile.model;
 
 public class ChatMessage {
     private String text;
@@ -9,6 +9,10 @@ public class ChatMessage {
         this.type = type;
     }
 
+    public ChatMessage(String text) {
+        this.text = text;
+
+    }
     public String getText() {
         return text;
     }

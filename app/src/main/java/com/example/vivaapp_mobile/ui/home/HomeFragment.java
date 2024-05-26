@@ -47,10 +47,33 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
 
         List<Product> productList = new ArrayList<>();
+        Product product1 = new Product(R.drawable.producttavuk, "Piliç Baget ", 119.99, "Et");
 
-        productList.add(new Product(R.drawable.fo, "Product 1", 19.99,"Et, Tavuk, Balık"));
-        productList.add(new Product(R.drawable.ettavuk, "Product 2", 29.99,"Meyve, Sebze"));
-        productList.add(new Product(R.drawable.fo, "Product 3", 19.99,"İçecek"));
+
+        Product product4 = new Product(R.drawable.productseftali ,"Şeftali", 29.99, "Meyve");
+
+
+        Product product7 = new Product(R.drawable.producticetea ,"İce Tea", 36.50, "Icecek");
+        Product product8 = new Product(R.drawable.productsu ,"Su", 8.95, "Icecek");
+
+
+        Product product10 = new Product(R.drawable.productun ,"Un", 33.50, "TemelGida");
+
+
+
+        Product product13 = new Product(R.drawable.productyumasitici ,"Yumuşatıcı", 73.50, "Deterjan");
+
+
+        Product product15 = new Product(R.drawable.producttost ,"Tost Ekmeği", 12.50, "Firin");
+
+        productList.add(product1);
+        productList.add(product4);
+        productList.add(product7);
+        productList.add(product8);
+        productList.add(product10);
+        productList.add(product13);
+        productList.add(product15);
+
 
 
         ProductAdapter adapter = new ProductAdapter(getContext(), productList);
