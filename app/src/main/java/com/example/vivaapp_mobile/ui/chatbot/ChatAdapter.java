@@ -3,6 +3,7 @@ package com.example.vivaapp_mobile.ui.chatbot;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,8 +17,8 @@ import java.util.List;
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<ChatMessage> messages;
-     static final int TYPE_USER = 1;
-     static final int TYPE_BOT = 2;
+    static final int TYPE_USER = 1;
+    static final int TYPE_BOT = 2;
 
     public ChatAdapter(List<ChatMessage> messages) {
         this.messages = messages;
@@ -39,8 +40,6 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 throw new IllegalArgumentException("Invalid view type");
         }
     }
-
-
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
@@ -80,14 +79,35 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     static class BotMessageViewHolder extends RecyclerView.ViewHolder {
         private TextView messageTextView;
+        private Button buttonYes;
+        private Button buttonNo;
 
         BotMessageViewHolder(View itemView) {
             super(itemView);
             messageTextView = itemView.findViewById(R.id.textViewMessage);
+            buttonYes = itemView.findViewById(R.id.buttonYes);
+            buttonNo = itemView.findViewById(R.id.buttonNo);
         }
 
         void bind(ChatMessage message) {
             messageTextView.setText(message.getText());
+
+            if (message.getText().contains("Malzemeler Sepete Eklensin mi?")) {
+                buttonYes.setVisibility(View.VISIBLE);
+                buttonNo.setVisibility(View.VISIBLE);
+
+                buttonYes.setOnClickListener(v -> {
+                    // Handle "Evet" button click
+                });
+
+                buttonNo.setOnClickListener(v -> {
+                    // Handle "Hayır" button click
+                });
+            } else {
+                buttonYes.setVisibility(View.GONE);
+                buttonNo.setVisibility(View.GONE);
+            }
         }
     }
 }
+

@@ -95,9 +95,9 @@ public class ChatbotActivity extends AppCompatActivity {
             }
             // Video URL'sini de ekle
 
-          //  botResponse += "\nİşte yapılış videosu:\n " + chatBot.getVideoUrl();
+            botResponse += "\nİşte yapılış videosu:\n " + chatBot.getVideoUrl();
 
-           // botResponse += "\n\nMalzemeler Sepete Eklensin mi?:\n " ;
+          botResponse += "\n\nMalzemeler Sepete Eklensin mi?:\n " ;
 
             addBotMessage(botResponse);
 

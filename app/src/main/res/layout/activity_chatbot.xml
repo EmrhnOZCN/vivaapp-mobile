@@ -52,8 +52,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewChat"
-        android:layout_width="360dp"
-        android:layout_height="465dp"
+        android:layout_width="344dp"
+        android:layout_height="403dp"
         android:layout_marginTop="88dp"
         android:background="@color/gray_100"
 
@@ -72,6 +72,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginBottom="28dp"
+
         android:hint="Mesajınızı yazın..."
         android:inputType="text"
         app:layout_constraintBottom_toBottomOf="parent"
