@@ -1,6 +1,7 @@
 package com.example.vivaapp_mobile.ui.product;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
+import android.app.AlertDialog;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -92,6 +94,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int selectedPosition, long id) {
                 if (selectedPosition == 0) {
+                    showRemoveConfirmationDialog(product);
                     holder.binding.addToCartButton.setVisibility(View.VISIBLE);
                     holder.binding.quantitySpinner.setVisibility(View.GONE);
                     removeProductFromSharedPreferences(product);
@@ -189,6 +192,27 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         return 0;
     }
+    private void showRemoveConfirmationDialog(Product product) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Ürünü Kaldır");
+        builder.setMessage("Bu ürünü sepetten kaldırmak istediğinizden emin misiniz?");
+        builder.setPositiveButton("Evet", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                removeProductFromSharedPreferences(product);
+                Toast.makeText(context, "Ürün sepetten kaldırıldı", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Hayır", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Hiçbir işlem yapmıyoruz, sadece dialogu kapatıyoruz
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
 
 
 

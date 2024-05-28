@@ -1,15 +1,20 @@
 package com.example.vivaapp_mobile.ui.cart;
 
 import android.app.Application;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.vivaapp_mobile.R;
 import com.example.vivaapp_mobile.model.CartItem;
 import com.example.vivaapp_mobile.model.repository.OrderRepository;
 
@@ -76,6 +81,7 @@ public class CartViewModel extends AndroidViewModel {
 
         return cartItems;
     }
+
     private void clearCart() {
         // Sepetinizi temizlemek için SharedPreferences kullanın
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences("cart_prefs", Context.MODE_PRIVATE);
@@ -101,9 +107,36 @@ public class CartViewModel extends AndroidViewModel {
             // Sepeti temizle
             clearCart();
 
-            // Ana sayfaya geri dön
+            // Bildirim gönder
+            sendNotification("Siparişiniz alındı", "Siparişiniz başarıyla alınmıştır.");
 
+            // Ana sayfaya geri dön
         }
+    }
+
+    private void sendNotification(String title, String message) {
+        // Bildirim kanalını oluştur
+        String CHANNEL_ID = "my_channel_01";
+        CharSequence name = "my_channel";
+        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        NotificationChannel channel = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            channel = new NotificationChannel(CHANNEL_ID, name, importance);
+        }
+
+        // Bildirimi oluştur
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplication(), CHANNEL_ID)
+                .setSmallIcon(R.drawable.noticon)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        // Bildirimi göster
+        NotificationManager notificationManager = (NotificationManager) getApplication().getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notificationManager.createNotificationChannel(channel);
+        }
+        notificationManager.notify(0, builder.build());
     }
 
 

@@ -86,6 +86,38 @@ public class ProductRepository {
         return productList;
     }
 
+    // Method to get products by name
+    public List<Product> getProductsByName(String name) {
+        List<Product> productList = new ArrayList<>();
+        Cursor cursor = databaseHelper.readProductsByName(name);
+        if (cursor != null) {
+            int columnIndexId = cursor.getColumnIndex(DatabaseHelper.COLUMN_PRODUCT_ID);
+            int columnIndexImage = cursor.getColumnIndex(DatabaseHelper.COLUMN_IMAGE_RESOURCE);
+            int columnIndexName = cursor.getColumnIndex(DatabaseHelper.COLUMN_NAME);
+            int columnIndexPrice = cursor.getColumnIndex(DatabaseHelper.COLUMN_PRICE);
+            int columnIndexCategory = cursor.getColumnIndex(DatabaseHelper.COLUMN_CATEGORY_NAME);
+
+            if (cursor.moveToFirst()) {
+                do {
+                    if (columnIndexId != -1 && columnIndexImage != -1 && columnIndexName != -1
+                            && columnIndexPrice != -1 && columnIndexCategory != -1) {
+                        int id = cursor.getInt(columnIndexId);
+                        int imageResource = cursor.getInt(columnIndexImage);
+                        String productName = cursor.getString(columnIndexName);
+                        double price = cursor.getDouble(columnIndexPrice);
+                        String categoryName = cursor.getString(columnIndexCategory);
+                        Product product = new Product(imageResource, productName, price, categoryName);
+                        productList.add(product);
+                    } else {
+                        Log.e("getColumnIndexError", "One or more column indices are -1");
+                    }
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        }
+        return productList;
+    }
+
 
 
 

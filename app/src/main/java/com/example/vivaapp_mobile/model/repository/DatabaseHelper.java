@@ -222,6 +222,12 @@
             return cursor;
         }
 
+        public Cursor readProductsByName(String name) {
+            SQLiteDatabase db = this.getReadableDatabase();
+            String query = "SELECT * FROM " + TABLE_PRODUCTS + " WHERE " + COLUMN_NAME + " LIKE ?";
+            Cursor cursor = db.rawQuery(query, new String[]{"%" + name + "%"});
+            return cursor;
+        }
 
 
 

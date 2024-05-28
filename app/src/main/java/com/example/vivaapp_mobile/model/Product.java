@@ -4,7 +4,7 @@ public class Product {
     private int id;
     private int imageResource;
     private String name;
-    private double price;
+        private double price;
     private String categoryName;
 
     public Product(int imageResource, String name, double price, String categoryName) {

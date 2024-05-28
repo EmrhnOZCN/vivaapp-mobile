@@ -1,7 +1,9 @@
 package com.example.vivaapp_mobile.ui.cart;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,10 +78,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
         });
 
         holder.removeButton.setOnClickListener(view -> {
-            removeProductFromSharedPreferences(cartItem);
-            cartItemList.remove(position);
-            notifyItemRemoved(position);
-            notifyItemRangeChanged(position, cartItemList.size());
+            showRemoveConfirmationDialog(cartItem);
 
         });
     }
@@ -122,6 +121,28 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
         // Save the updated set back to SharedPreferences
         editor.putStringSet("products", updatedProductSet);
         editor.apply();
+    }
+    private void showRemoveConfirmationDialog(CartItem cartItem) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Ürünü Kaldır");
+        builder.setMessage("Bu ürünü sepetten kaldırmak istediğinizden emin misiniz?");
+        builder.setPositiveButton("Evet", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                removeProductFromSharedPreferences(cartItem);
+                cartItemList.remove(cartItem);
+                notifyDataSetChanged(); // Adaptera değişiklik olduğunu bildir
+            }
+        });
+        builder.setNegativeButton("Hayır", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Kullanıcı "Hayır"ı seçtiğinde herhangi bir işlem yapmıyoruz, sadece dialogu kapatıyoruz
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private void removeProductFromSharedPreferences(CartItem cartItem) {
