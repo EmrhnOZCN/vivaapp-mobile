@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="48dp"
@@ -13,8 +14,6 @@
         android:layout_marginTop="16dp"
         android:gravity="center"
         android:text="VİVA"
-
-
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,9 +27,6 @@
         app:layout_constraintEnd_toStartOf="@+id/textView"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-
-
     <ImageView
         android:id="@+id/girisButon"
         android:layout_width="35dp"
@@ -41,10 +37,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:onClick="showDropdownMenu" />
+
     <ImageView
         android:id="@+id/cikisButon"
         android:layout_width="35dp"
-        android:layout_height="30dp"
+        android:layout_height="28dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="27dp"
         android:src="@drawable/logout"
@@ -52,14 +49,10 @@
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone" />
 
-
-
-
     <ImageView
         android:id="@+id/chatbotButon"
         android:layout_width="35dp"
         android:layout_height="30dp"
-
         android:layout_marginTop="16dp"
         android:layout_marginEnd="76dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -70,11 +63,9 @@
         android:id="@+id/imageView5"
         android:layout_width="390dp"
         android:layout_height="110dp"
-
         android:layout_marginTop="72dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.761"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/reklam1" />
@@ -83,27 +74,29 @@
         android:id="@+id/searchView"
         android:layout_width="360dp"
         android:layout_height="34dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="65dp"
         android:layout_marginBottom="88dp"
         android:background="@drawable/searchview_background"
-
-        app:iconifiedByDefault="false"
+        android:contextClickable="false"
+        android:clickable="true"
+        android:focusable="true"
+        android:queryHint="Neye İhtiyacınız Vardı?"
+        android:iconifiedByDefault="false"
+        style="@style/SearchViewHintStyle"
         app:layout_constraintBottom_toBottomOf="@+id/imageView5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:queryHint="Ne aramak istersiniz?"
-        android:textColorHint="#000000"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
+
 
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="422dp"
         android:layout_height="280dp"
-
         android:layout_marginBottom="420dp"
         app:layout_constraintBottom_toBottomOf="parent"
-
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/reklam2" />
 
@@ -112,11 +105,11 @@
         android:layout_width="341dp"
         android:layout_height="362dp"
         android:layout_marginBottom="76dp"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.414"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchView"
+        app:layout_constraintVertical_bias="0.989" />
 
     <TextView
         android:id="@+id/textView3"
@@ -129,6 +122,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.132"
         app:layout_constraintStart_toStartOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

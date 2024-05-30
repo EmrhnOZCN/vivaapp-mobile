@@ -1,6 +1,5 @@
 package com.example.vivaapp_mobile.ui.home;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,9 +7,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
-
+import android.widget.SearchView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -18,125 +16,73 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vivaapp_mobile.R;
-import com.example.vivaapp_mobile.ui.login.LoginActivity;
-
 import com.example.vivaapp_mobile.databinding.FragmentHomeBinding;
-import com.example.vivaapp_mobile.ui.chatbot.ChatbotActivity;
 import com.example.vivaapp_mobile.model.Product;
+import com.example.vivaapp_mobile.ui.chatbot.ChatbotActivity;
+import com.example.vivaapp_mobile.ui.login.LoginActivity;
 import com.example.vivaapp_mobile.ui.product.ProductAdapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
     private FragmentHomeBinding binding;
-
-
-
+    private List<Product> productList;
+    private ProductAdapter adapter;
+    private boolean isSearching = false;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
-
+        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         RecyclerView recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
 
-        List<Product> productList = new ArrayList<>();
-        Product product1 = new Product(R.drawable.producttavuk, "Piliç Baget ", 119.99, "Et");
-
-
-        Product product4 = new Product(R.drawable.productseftali ,"Şeftali", 29.99, "Meyve");
-
-
-        Product product7 = new Product(R.drawable.producticetea ,"İce Tea", 36.50, "Icecek");
-        Product product8 = new Product(R.drawable.productsu ,"Su", 8.95, "Icecek");
-
-
-        Product product10 = new Product(R.drawable.productun ,"Un", 33.50, "TemelGida");
-
-
-
-        Product product13 = new Product(R.drawable.productyumasitici ,"Yumuşatıcı", 73.50, "Deterjan");
-
-
-        Product product15 = new Product(R.drawable.producttost ,"Tost Ekmeği", 12.50, "Firin");
-
-        productList.add(product1);
-        productList.add(product4);
-        productList.add(product7);
-        productList.add(product8);
-        productList.add(product10);
-        productList.add(product13);
-        productList.add(product15);
-
-
-
-        ProductAdapter adapter = new ProductAdapter(getContext(), productList);
+        productList = new ArrayList<>();
+        initializeProductList();
+        adapter = new ProductAdapter(getContext(), productList);
         recyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener(new ProductAdapter.OnItemClickListener() {
             @Override
             public void onAddToCartClick(int position) {
-                // Handle add to cart action here
                 Product clickedProduct = productList.get(position);
-                // Örneğin, ürünü bir sepete ekleyebilirsiniz
-                // Sepete ekleme işlemi burada gerçekleştirilir
-                // Örnek olarak:
                 addToCart(clickedProduct);
             }
         });
 
-
-
-
-        // Kullanıcı giriş durumunu kontrol et
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-        boolean isLogin = sharedPreferences.getBoolean("isLogin", false);
-
-        if (isLogin) {
-            String userName = sharedPreferences.getString("userName", "");
-            String userSurname = sharedPreferences.getString("userSurname", "");
-            String userEmail = sharedPreferences.getString("userEmail", "");
-
-        }
-        if (isLogin) {
-            binding.girisButon.setVisibility(View.GONE);
-            binding.cikisButon.setVisibility(View.VISIBLE);
-        } else {
-            binding.girisButon.setVisibility(View.VISIBLE);
-            binding.cikisButon.setVisibility(View.GONE);
-        }
-
-        // Çıkış yap butonuna tıklama işlemi
-        binding.cikisButon.setOnClickListener(new View.OnClickListener() {
+        // SearchView listener ayarları
+        binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void onClick(View v) {
-                // Kullanıcının çıkış yaptığını SharedPreferences'a kaydet
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean("isLogin", false);
-                editor.remove("userId");
-                editor.remove("userName");
-                editor.remove("userSurname");
-                editor.remove("userEmail");
-                editor.apply();
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
-                // Ana sayfayı yeniden yükleyin veya gerekli işlemleri yapın
-                binding.girisButon.setVisibility(View.VISIBLE);
-                binding.cikisButon.setVisibility(View.GONE);
-                Toast.makeText(getContext(), "Çıkış yapıldı", Toast.LENGTH_SHORT).show();
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                isSearching = true;
+                filterProducts(newText);
+                return false;
             }
         });
 
-        // Set click listener for girisButon
+        checkUserLoginStatus();
+
+        binding.cikisButon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logoutUser();
+            }
+        });
+
         binding.girisButon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Launch LoginActivity when the button is clicked
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
             }
@@ -145,17 +91,100 @@ public class HomeFragment extends Fragment {
         binding.chatbotButon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Launch LoginActivity when the button is clicked
                 Intent intent = new Intent(getActivity(), ChatbotActivity.class);
                 startActivity(intent);
             }
         });
-
-
-
+        binding.searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                isSearching = false;
+                filterProducts("");
+                return false;
+            }
+        });
+        binding.searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.searchView.setIconified(false);
+                if (isSearching) {
+                    binding.textView3.setText("Aranan Ürünler");
+                } else {
+                    binding.textView3.setText("En popüler ürünler");
+                }
+            }
+        });
 
         return root;
     }
+
+    private void initializeProductList() {
+        productList.add(new Product(R.drawable.producttavuk, "Piliç Baget", 119.99, "Et"));
+        productList.add(new Product(R.drawable.productdanakuzu, "Dana Kıymalık", 419.99, "Et"));
+        productList.add(new Product(R.drawable.productlevrek, "Levrek", 319.99, "Et"));
+        productList.add(new Product(R.drawable.productseftali, "Şeftali", 29.99, "Meyve"));
+        productList.add(new Product(R.drawable.productlimon, "Limon", 39.99, "Meyve"));
+        productList.add(new Product(R.drawable.productbiber, "Biber", 19.99, "Meyve"));
+        productList.add(new Product(R.drawable.productsogan, "Soğan", 29.99, "Meyve"));
+        productList.add(new Product(R.drawable.productdomates, "Domates", 23.99, "Meyve"));
+        productList.add(new Product(R.drawable.producticetea, "İce Tea", 36.50, "İçecek"));
+        productList.add(new Product(R.drawable.productsu, "Su", 8.95, "İçecek"));
+        productList.add(new Product(R.drawable.productbeypazari, "Beypazarı", 1.99, "İçecek"));
+        productList.add(new Product(R.drawable.productun, "Un", 33.50, "Temel Gıda"));
+        productList.add(new Product(R.drawable.productpirinc, "Pirinç", 18.45, "Temel Gıda"));
+        productList.add(new Product(R.drawable.productmakarna, "Makarna", 5.99, "Temel Gıda"));
+        productList.add(new Product(R.drawable.tuzproduct, "Tuz", 23.95, "Temel Gıda"));
+        productList.add(new Product(R.drawable.productyag, "Yağ", 179.95, "Temel Gıda"));
+        productList.add(new Product(R.drawable.productyumurta, "Yumurta", 50.00, "Temel Gıda"));
+        productList.add(new Product(R.drawable.productyumasitici, "Yumuşatıcı", 73.50, "Deterjan"));
+        productList.add(new Product(R.drawable.productcamasirsuyu, "Çamaşır Suyu", 28.45, "Deterjan"));
+        productList.add(new Product(R.drawable.producttost, "Tost Ekmeği", 12.50, "Fırın"));
+        productList.add(new Product(R.drawable.productekmekkirinti, "Ekmek Kırıntısı", 20.50, "Fırın"));
+    }
+
+    private void filterProducts(String query) {
+        List<Product> filteredList = new ArrayList<>();
+        for (Product product : productList) {
+            if (product.getName().toLowerCase().contains(query.toLowerCase())) {
+                filteredList.add(product);
+            }
+        }
+        adapter.filterList(filteredList);
+        if (isSearching) {
+            binding.textView3.setText("Aranan Ürünler");
+        } else {
+            binding.textView3.setText("En popüler ürünler");
+        }
+    }
+
+    private void checkUserLoginStatus() {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        boolean isLogin = sharedPreferences.getBoolean("isLogin", false);
+
+        if (isLogin) {
+            binding.girisButon.setVisibility(View.GONE);
+            binding.cikisButon.setVisibility(View.VISIBLE);
+        } else {
+            binding.girisButon.setVisibility(View.VISIBLE);
+            binding.cikisButon.setVisibility(View.GONE);
+        }
+    }
+
+    private void logoutUser() {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("isLogin", false);
+        editor.remove("userId");
+        editor.remove("userName");
+        editor.remove("userSurname");
+        editor.remove("userEmail");
+        editor.apply();
+
+        binding.girisButon.setVisibility(View.VISIBLE);
+        binding.cikisButon.setVisibility(View.GONE);
+        Toast.makeText(getContext(), "Çıkış yapıldı", Toast.LENGTH_SHORT).show();
+    }
+
     private void addToCart(Product product) {
         // Burada ürünü sepete eklemek için gerekli işlemleri gerçekleştirin
         // Örneğin:
@@ -164,5 +193,4 @@ public class HomeFragment extends Fragment {
         // 3. Alışveriş sepeti görünümünü güncelleyin
         // vb.
     }
-
 }
