@@ -33,7 +33,7 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private List<Product> productList;
     private ProductAdapter adapter;
-    private boolean isSearching = false;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
@@ -65,7 +65,6 @@ public class HomeFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                isSearching = true;
                 filterProducts(newText);
                 return false;
             }
@@ -95,23 +94,11 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        binding.searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                isSearching = false;
-                filterProducts("");
-                return false;
-            }
-        });
+
         binding.searchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 binding.searchView.setIconified(false);
-                if (isSearching) {
-                    binding.textView3.setText("Aranan Ürünler");
-                } else {
-                    binding.textView3.setText("En popüler ürünler");
-                }
             }
         });
 
@@ -150,10 +137,16 @@ public class HomeFragment extends Fragment {
             }
         }
         adapter.filterList(filteredList);
-        if (isSearching) {
-            binding.textView3.setText("Aranan Ürünler");
-        } else {
-            binding.textView3.setText("En popüler ürünler");
+        // Arama sonuçları geldiğinde, en popüler ürünlerin yerine aranan ürünlerin listelendiğini belirtmek için aşağıdaki kodu ekleyin
+        if (filteredList.isEmpty()) {
+            // Arama sonuçları boşsa, en popüler ürünleri göster
+            Collections.sort(productList, new Comparator<Product>() {
+                @Override
+                public int compare(Product p1, Product p2) {
+                    return Double.compare(p2.getPrice(), p1.getPrice());
+                }
+            });
+            adapter.notifyDataSetChanged();
         }
     }
 
