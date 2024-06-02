@@ -80,8 +80,8 @@
         android:contextClickable="false"
         android:clickable="true"
         android:focusable="true"
-        android:queryHint="Neye İhtiyacınız Vardı?"
-        android:iconifiedByDefault="false"
+
+
         style="@style/SearchViewHintStyle"
         app:layout_constraintBottom_toBottomOf="@+id/imageView5"
         app:layout_constraintEnd_toEndOf="parent"

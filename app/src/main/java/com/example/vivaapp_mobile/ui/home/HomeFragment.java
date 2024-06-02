@@ -107,7 +107,7 @@ public class HomeFragment extends Fragment {
 
     private void initializeProductList() {
         productList.add(new Product(R.drawable.producttavuk, "Piliç Baget", 119.99, "Et"));
-        productList.add(new Product(R.drawable.productdanakuzu, "Dana Kıymalık", 419.99, "Et"));
+
         productList.add(new Product(R.drawable.productlevrek, "Levrek", 319.99, "Et"));
         productList.add(new Product(R.drawable.productseftali, "Şeftali", 29.99, "Meyve"));
         productList.add(new Product(R.drawable.productlimon, "Limon", 39.99, "Meyve"));
@@ -137,16 +137,11 @@ public class HomeFragment extends Fragment {
             }
         }
         adapter.filterList(filteredList);
-        // Arama sonuçları geldiğinde, en popüler ürünlerin yerine aranan ürünlerin listelendiğini belirtmek için aşağıdaki kodu ekleyin
+
         if (filteredList.isEmpty()) {
-            // Arama sonuçları boşsa, en popüler ürünleri göster
-            Collections.sort(productList, new Comparator<Product>() {
-                @Override
-                public int compare(Product p1, Product p2) {
-                    return Double.compare(p2.getPrice(), p1.getPrice());
-                }
-            });
-            adapter.notifyDataSetChanged();
+            binding.textView3.setText("En popüler ürünler");
+        } else {
+            binding.textView3.setText("Arama Sonucu");
         }
     }
 
