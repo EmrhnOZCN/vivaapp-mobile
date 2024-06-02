@@ -28,10 +28,13 @@ public class CartViewModel extends AndroidViewModel {
     private final MutableLiveData<List<CartItem>> cartItems;
     private final MutableLiveData<Double> totalPrice;
 
+    private static final String CHANNEL_ID = "order_notification_channel";
+
     public CartViewModel(@NonNull Application application) {
         super(application);
         cartItems = new MutableLiveData<>(getCartItemsFromSharedPreferences());
         totalPrice = new MutableLiveData<>(calculateTotalPrice(cartItems.getValue()));
+        createNotificationChannel();
     }
 
     public LiveData<List<CartItem>> getCartItems() {
@@ -83,61 +86,51 @@ public class CartViewModel extends AndroidViewModel {
     }
 
     private void clearCart() {
-        // Sepetinizi temizlemek için SharedPreferences kullanın
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences("cart_prefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove("products");
         editor.apply();
 
-        // LiveData'yı güncelleyerek sepeti boşaltın
         cartItems.setValue(new ArrayList<>());
         totalPrice.setValue(0.0);
     }
 
-
     public void confirmOrder(int userId, String[] productNames, int quantity, String orderDate) {
-        // Siparişi veritabanına eklemek için OrderRepository sınıfını kullanın.
         OrderRepository orderRepository = new OrderRepository(getApplication());
         long result = orderRepository.addOrder(userId, productNames, quantity, orderDate);
 
         if (result != -1) {
-            // Sepet başarıyla temizlendi ve sipariş alındı, bu yüzden Toast mesajı gösterin
             Toast.makeText(getApplication(), "Siparişiniz başarıyla alınmıştır.", Toast.LENGTH_SHORT).show();
 
-            // Sepeti temizle
             clearCart();
 
-            // Bildirim gönder
-            sendNotification("Siparişiniz alındı", "Siparişiniz başarıyla alınmıştır.");
+            // Sipariş onaylandığında bildirim gönder
+            sendOrderNotification();
 
-            // Ana sayfaya geri dön
+            // Ana sayfaya geri dön (bu kısmı implement etmelisiniz)
         }
     }
 
-    private void sendNotification(String title, String message) {
-        // Bildirim kanalını oluştur
-        String CHANNEL_ID = "my_channel_01";
-        CharSequence name = "my_channel";
-        int importance = NotificationManager.IMPORTANCE_DEFAULT;
-        NotificationChannel channel = null;
+    private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            channel = new NotificationChannel(CHANNEL_ID, name, importance);
-        }
-
-        // Bildirimi oluştur
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplication(), CHANNEL_ID)
-                .setSmallIcon(R.drawable.noticon)
-                .setContentTitle(title)
-                .setContentText(message)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        // Bildirimi göster
-        NotificationManager notificationManager = (NotificationManager) getApplication().getSystemService(Context.NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Order Notifications";
+            String description = "Notifications for order confirmations";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getApplication().getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
-        notificationManager.notify(0, builder.build());
     }
 
+    private void sendOrderNotification() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplication(), CHANNEL_ID)
+                .setSmallIcon(R.drawable.noticon)
+                .setContentTitle("Sipariş Onayı")
+                .setContentText("Siparişiniz başarıyla alınmıştır.")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
+        NotificationManager notificationManager = (NotificationManager) getApplication().getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(1, builder.build());
+    }
 }

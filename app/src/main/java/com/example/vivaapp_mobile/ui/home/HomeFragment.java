@@ -147,9 +147,13 @@ public class HomeFragment extends Fragment {
         List<Product> tempList = new ArrayList<>(productList);
         Collections.shuffle(tempList);
         popularProducts.clear();
-        for (int i = 0; i < 6 && i < tempList.size(); i++) {
-            popularProducts.add(tempList.get(i));
-        }
+        popularProducts.add(new Product(R.drawable.producttavuk, "Piliç Baget", 119.99, "Et"));
+        popularProducts.add(new Product(R.drawable.productlevrek, "Levrek", 319.99, "Et"));
+        popularProducts.add(new Product(R.drawable.productseftali, "Şeftali", 29.99, "Meyve"));
+        popularProducts.add(new Product(R.drawable.productlimon, "Limon", 39.99, "Meyve"));
+        popularProducts.add(new Product(R.drawable.productbiber, "Biber", 19.99, "Meyve"));
+        popularProducts.add(new Product(R.drawable.productsogan, "Soğan", 29.99, "Meyve"));
+        popularProducts.add(new Product(R.drawable.productdomates, "Domates", 23.99, "Meyve"));
     }
 
     private void filterProducts(String query) {
