@@ -24,8 +24,8 @@ import com.example.vivaapp_mobile.ui.product.ProductAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 
 public class HomeFragment extends Fragment {
 
@@ -33,6 +33,7 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private List<Product> productList;
     private ProductAdapter adapter;
+    private List<Product> popularProducts;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -44,14 +45,17 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
 
         productList = new ArrayList<>();
+        popularProducts = new ArrayList<>();
         initializeProductList();
-        adapter = new ProductAdapter(getContext(), productList);
+        showRandomPopularProducts();
+
+        adapter = new ProductAdapter(getContext(), popularProducts);
         recyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener(new ProductAdapter.OnItemClickListener() {
             @Override
             public void onAddToCartClick(int position) {
-                Product clickedProduct = productList.get(position);
+                Product clickedProduct = popularProducts.get(position);
                 addToCart(clickedProduct);
             }
         });
@@ -67,6 +71,16 @@ public class HomeFragment extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 filterProducts(newText);
                 return false;
+            }
+        });
+
+        binding.searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus && binding.searchView.getQuery().toString().isEmpty()) {
+                    binding.textView3.setText("En popüler ürünler");
+                    adapter.filterList(popularProducts);
+                }
             }
         });
 
@@ -107,7 +121,6 @@ public class HomeFragment extends Fragment {
 
     private void initializeProductList() {
         productList.add(new Product(R.drawable.producttavuk, "Piliç Baget", 119.99, "Et"));
-
         productList.add(new Product(R.drawable.productlevrek, "Levrek", 319.99, "Et"));
         productList.add(new Product(R.drawable.productseftali, "Şeftali", 29.99, "Meyve"));
         productList.add(new Product(R.drawable.productlimon, "Limon", 39.99, "Meyve"));
@@ -129,19 +142,33 @@ public class HomeFragment extends Fragment {
         productList.add(new Product(R.drawable.productekmekkirinti, "Ekmek Kırıntısı", 20.50, "Fırın"));
     }
 
-    private void filterProducts(String query) {
-        List<Product> filteredList = new ArrayList<>();
-        for (Product product : productList) {
-            if (product.getName().toLowerCase().contains(query.toLowerCase())) {
-                filteredList.add(product);
-            }
+    private void showRandomPopularProducts() {
+        // Rastgele 6 popüler ürünü seç
+        List<Product> tempList = new ArrayList<>(productList);
+        Collections.shuffle(tempList);
+        popularProducts.clear();
+        for (int i = 0; i < 6 && i < tempList.size(); i++) {
+            popularProducts.add(tempList.get(i));
         }
-        adapter.filterList(filteredList);
+    }
 
-        if (filteredList.isEmpty()) {
+    private void filterProducts(String query) {
+        if (query.isEmpty()) {
             binding.textView3.setText("En popüler ürünler");
+            adapter.filterList(popularProducts);
         } else {
-            binding.textView3.setText("Arama Sonucu");
+            List<Product> filteredList = new ArrayList<>();
+            for (Product product : productList) {
+                if (product.getName().toLowerCase().contains(query.toLowerCase())) {
+                    filteredList.add(product);
+                }
+            }
+            adapter.filterList(filteredList);
+            if (filteredList.isEmpty()) {
+                binding.textView3.setText("Arama Sonucu");
+            } else {
+                binding.textView3.setText("Arama Sonucu");
+            }
         }
     }
 
